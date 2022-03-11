@@ -1,0 +1,44 @@
+{
+    "development": {
+      "username": "admin",
+      "password": "Admin@123",
+      "database": "rab",
+      "host": "127.0.0.1",
+      "dialect": "mysql",
+      "SECRET":"RABDEVELOPEDWESHCOINDIABYGREATDEVELOPER",
+      "mailUser" :"hansa.technofy@gmail.com",
+      "mailPass":"Han#123@",
+      "mailService": "gmail",
+      "TwilioAccountSid": "AC4d6bf8c7fbfa68440682582ecd98a85a",
+      "TwilioAuthToken":"19e4f21409d92bc663e7cf571ad3026b", 
+      "TwilioFrom":"+19035640986",
+      "perPage":10,
+      "BASE_URL":"http://localhost:3000/",
+      "FrontendUrl":"http://localhost:8001/",
+      "contactEmail":"hansathakur222@gmail.com"
+    },
+    "production": {
+      "username": "admin",
+      "password": "Admin@123",
+      "database": "rab",
+      "host": "127.0.0.1",
+      "dialect": "mysql",
+      "SECRET":"RABDEVELOPEDWESHCOINDIABYGREATDEVELOPER",
+      "mailUser" :"karandeep.technofy@gmail.com",
+      "mailPass":"Karan@9779019444",
+      "mailService": "gmail",
+      "TwilioAccountSid": "AC4d6bf8c7fbfa68440682582ecd98a85a",
+      "TwilioAuthToken":"19e4f21409d92bc663e7cf571ad3026b", 
+      "TwilioFrom":"+19035640986",
+      "perPage":10,
+      "BASE_URL":"http://localhost:3001/",
+      "contactEmail":"hansathakur222@gmail.com"
+    },
+    "test": {
+      "username": "admin",
+      "password": "Admin@123",
+      "database": "rab",
+      "host": "127.0.0.1",
+      "dialect": "mariadb"
+    }
+  }

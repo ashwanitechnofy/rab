@@ -1,0 +1,139 @@
+<script>
+    var url = window.location.pathname.split( '/' )
+    var segment = url[2];
+</script>
+
+<!-- jQuery  -->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/popper.min.js"></script>
+<!-- Popper for Bootstrap -->
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/metisMenu.min.js"></script>
+<script src="/assets/js/waves.js"></script>
+<script src="/assets/js/jquery.slimscroll.js"></script>
+
+<!-- Counter js  -->
+<script src="/assets/plugins/waypoints/jquery.waypoints.min.js"></script>
+<script src="/assets/plugins/counterup/jquery.counterup.min.js"></script>
+<!--C3 Chart-->
+<script type="text/javascript" src="/assets/plugins/d3/d3.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/c3/c3.min.js"></script>
+<!--Echart Chart-->
+<script src="/assets/plugins/echart/echarts-all.js"></script>
+<!-- Dashboard init -->
+<script src="/assets/pages/jquery.dashboard.js"></script>
+
+<!--switchery-->
+<script src="/assets/plugins/switchery/switchery.min.js"></script>
+<script src="/assets/plugins/select2/js/select2.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/bootstrap-select/js/bootstrap-select.js" type="text/javascript"></script>
+<!-- file upload -->
+<script src="/assets/plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+
+<!-- Init Js file -->
+<script type="text/javascript" src="/assets/pages/jquery.form-advanced.init.js"></script>
+
+
+<!-- Required datatable js -->
+<script src="/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/assets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Buttons examples -->
+<script src="/assets/plugins/datatables/dataTables.buttons.min.js"></script>
+<script src="/assets/plugins/datatables/buttons.bootstrap4.min.js"></script>
+<script src="/assets/plugins/datatables/jszip.min.js"></script>
+<script src="/assets/plugins/datatables/pdfmake.min.js"></script>
+<script src="/assets/plugins/datatables/vfs_fonts.js"></script>
+<script src="/assets/plugins/datatables/buttons.html5.min.js"></script>
+<script src="/assets/plugins/datatables/buttons.print.min.js"></script>
+<script src="/assets/plugins/datatables/buttons.colVis.min.js"></script>
+
+<!-- Responsive examples -->
+<script src="/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="/assets/plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+<!-- Date Picker -->
+<script src="/assets/plugins/moment/moment.js"></script>
+<script src="/assets/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="/assets/plugins/clockpicker/js/bootstrap-clockpicker.min.js"></script>
+<script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="/assets/pages/jquery.form-pickers.init.js"></script>
+
+<!-- App js -->
+<script src="/assets/js/jquery.core.js"></script>
+<script src="/assets/js/jquery.app.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#datatable').DataTable();
+
+        //Buttons examples
+        var table = $('#datatable-buttons').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'pdf', 'colvis']
+        });
+
+        table.buttons().container()
+        .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+    } );
+</script>
+
+<!-- Image Upload With Preview -->
+<script>
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var htmlPreview =
+                    '<img width="200" src="' + e.target.result + '" />' +
+                    '<p>' + input.files[0].name + '</p>';
+                var wrapperZone = $(input).parent();
+                var previewZone = $(input).parent().parent().find('.preview-zone');
+                var boxZone = $(input).parent().parent().find('.preview-zone').find('.box').find('.box-body');
+
+                wrapperZone.removeClass('dragover');
+                previewZone.removeClass('hidden');
+                boxZone.empty();
+                boxZone.append(htmlPreview);
+                $('.remove-preview').show();
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function reset(e) {
+        e.wrap('<form>').closest('form').get(0).reset();
+        e.unwrap();
+    }
+
+    $(".dropzone").change(function() {
+        readFile(this);
+    });
+
+    $('.dropzone-wrapper').on('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).addClass('dragover');
+    });
+
+    $('.dropzone-wrapper').on('dragleave', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).removeClass('dragover');
+    });
+
+    $('.remove-preview').on('click', function() {
+        var boxZone = $(this).parents('.preview-zone').find('.box-body');
+        var previewZone = $(this).parents('.preview-zone');
+        var dropzone = $(this).parents('.form-group').find('.dropzone');
+        boxZone.empty();
+        previewZone.addClass('hidden');
+        reset(dropzone);
+        $('.remove-preview').hide();
+    });
+</script>
