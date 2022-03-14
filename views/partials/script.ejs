@@ -74,7 +74,9 @@
         //Buttons examples
         var table = $('#datatable-buttons').DataTable({
             lengthChange: false,
-            buttons: ['copy', 'excel', 'pdf', 'colvis']
+            buttons: ['copy', 'excel', 'pdf', 'colvis'],
+            order: [],
+            aoColumnDefs: [{ "bSortable": false, "aTargets": [-1]}],
         });
 
         table.buttons().container()
