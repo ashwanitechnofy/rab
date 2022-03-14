@@ -5,21 +5,20 @@ const Users = require('../model/users')(sequelize, DataTypes);
 const UserOne = Role.hasOne(Users, {
     foreignKey: 'role_id'
 });
-class RoleService {
 
+class RoleService {
     getIdByRoleName(name) {
         return new Promise((resolve, reject) => {
             Role.findOne({
                 attributes:['id'],
-                where: {
-                    name: name
-                }
+                where: {name: name}
             }).then(res => {
-                return resolve(res.id)
+                return resolve(res.id);
             }).catch(err => {
                 return reject(err);
             });
         });
     }
 }
+
 module.exports = RoleService;

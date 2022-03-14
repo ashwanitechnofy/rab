@@ -1,7 +1,7 @@
 {
     "development": {
-      "username": "admin",
-      "password": "Admin@123",
+      "username": "root",
+      "password": null,
       "database": "rab",
       "host": "127.0.0.1",
       "dialect": "mysql",
@@ -18,8 +18,8 @@
       "contactEmail":"hansathakur222@gmail.com"
     },
     "production": {
-      "username": "admin",
-      "password": "Admin@123",
+      "username": "root",
+      "password": null,
       "database": "rab",
       "host": "127.0.0.1",
       "dialect": "mysql",
@@ -35,8 +35,8 @@
       "contactEmail":"hansathakur222@gmail.com"
     },
     "test": {
-      "username": "admin",
-      "password": "Admin@123",
+      "username": "root",
+      "password": null,
       "database": "rab",
       "host": "127.0.0.1",
       "dialect": "mariadb"
