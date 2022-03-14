@@ -14,17 +14,17 @@
                                 <h5 class="text-uppercase text-center font-bold m-b-5 m-t-30">Sign In</h5>
                             </div>
                             <div class="account-content">
-                                <form class="form-horizontal" action="#">
+                                <form class="form-horizontal" action="/admin/login" method="post">
                                     <div class="form-group m-b-20 row">
                                         <div class="col-12">
                                             <label for="emailaddress">Email</label>
-                                            <input class="form-control" type="email" id="emailaddress" required="" placeholder="Email">
+                                            <input class="form-control" type="email" name="email" id="emailaddress" required="" placeholder="Email">
                                         </div>
                                     </div>
                                     <div class="form-group row m-b-20">
                                         <div class="col-12">
                                             <label for="password">Password</label>
-                                            <input class="form-control" type="password" required="" id="password" placeholder="Password">
+                                            <input class="form-control" type="password" name="password" required="" id="password" placeholder="Password">
                                         </div>
                                     </div>
                                     <div class="form-group row m-b-20">
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="form-group row text-center m-t-10">
                                         <div class="col-12">
-                                            <button class="btn btn-md btn-block btn-primary waves-effect waves-light" type="submit">Sign In</button>
+                                           <button class="btn btn-md btn-block btn-primary waves-effect waves-light" type="submit">Sign In</button>
                                         </div>
                                     </div>
                                 </form>

@@ -39,10 +39,40 @@ controller.categoriesIndex = async (req, res) => {
  * @params:      
  * @createdDate: MARCH-2022 (mm-yyyy)
  * @developer:   TCHNOFY INDIA
- * @purpose:     To view Categories Create
+ * @purpose:     To view Categories create form
 */
 controller.categoriesCreate = async (req, res) => {
     return res.render('manageCategories/categories/create');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To store categories
+*/
+controller.categoriesStore = async (req, res) => {
+    console.log('okk');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To view categories detail
+*/
+controller.categoriesView = async (req, res) => {
+    return res.render('manageCategories/categories/view');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To view categories edit form
+*/
+controller.categoriesEdit = async (req, res) => {
+    return res.render('manageCategories/categories/edit');
 }
 
 module.exports = controller;
