@@ -1,6 +1,10 @@
 label.error {
     color: #f96a74;
 }
+.select2 span:after label.error {
+    position: absolute;
+    color: #f96a74 !important;
+}
 .dragDrop .error {
     position: absolute;
     top: 150px;
@@ -10,6 +14,15 @@ label.error {
 .dragDrop {
     width: auto;
 }
+.select2 + label, .filestyle.error + label  {
+    position: absolute;
+    top: 65px;
+    display: block;
+}
+.select2 {
+    margin-bottom: 1.2rem;
+}
+
 .dragDrop .box {
     position: relative;
     background: #ffffff;

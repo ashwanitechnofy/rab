@@ -175,8 +175,70 @@ $('#userForm').validate({
 });
 
 $('#taxiDriverForm').validate({
-    rules : manageUserRules,
-    messages :manageUserMessage,
+    rules : Object.assign(manageUserRules, {
+        brand : {
+            required : true,
+        },
+        model : {
+            required : true,
+        },
+        type : {
+            required : true,
+        },
+        registration_number : {
+            required : true,
+        },
+        location : {
+            required : true,
+        },
+        driving_area_radus : {
+            required : true,
+        },
+        license_number : {
+            required : true,
+        },
+        license_expiry_date : {
+            required : true,
+        },
+        license_front_side : {
+            required : true,
+        },
+        license_back_side : {
+            required : true,
+        },
+    }),
+    messages :Object.assign(manageUserMessage, {
+        brand : {
+            required : "Please select brand.",
+        },
+        model : {
+            required : "Please select model.",
+        },
+        type : {
+            required : "Please select type.",
+        },
+        registration_number : {
+            required : "Please enter your registration number.",
+        },
+        location : {
+            required : "Please enter your loaction.",
+        },
+        driving_area_radus : {
+            required : "Please enter your driving area radus.",
+        },
+        license_number : {
+            required : "Please enter your license number.",
+        },
+        license_expiry_date : {
+            required : "Please selete your date.",
+        },
+        license_front_side : {
+            required : "Please upload license.",
+        },
+        license_back_side : {
+            required : "Please upload license.",
+        },
+    }),
 });
 
 $('#hotelForm').validate({
