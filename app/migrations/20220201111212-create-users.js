@@ -4,17 +4,17 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER(11),
         primaryKey: true,
-        type: Sequelize.INTEGER(11)
+        autoIncrement: true,
+        type: Sequelize.INTEGER,
       },
       first_name: {
-        type: Sequelize.STRING(150),
+        type: Sequelize.STRING(20),
         allowNull: false
       },
       last_name: {
-        type: Sequelize.STRING(150),
+        type: Sequelize.STRING(20),
         allowNull: false
       },
       role_id: {
@@ -22,73 +22,70 @@ module.exports = {
         allowNull: false
       },
       email: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING(50),
         allowNull: false,
         unique: true,
         email:true
       },
       password: {
-        type: Sequelize.STRING(250),
+        type: Sequelize.STRING(255),
         allowNull: false
-      },
-      gender: {
-        type: Sequelize.STRING(5),
       },
       mobile_no: {
-        type: Sequelize.INTEGER(11),
+        type: Sequelize.STRING(20),
       },
-      alternate_mobile:{
-        type: Sequelize.INTEGER(11),
+      gender: {
+        type: Sequelize.STRING(10),
       },
-      age: {
-        type: Sequelize.INTEGER(5),
+      dob: {
+        type: Sequelize.DATE,
         allowNull: false
       },
-      photo: {
-        type: Sequelize.TEXT
+      country:{
+        type: Sequelize.STRING(20),
+        allowNull: false
       },
-      lat: {
-        type: Sequelize.DECIMAL(10,2)
+      state:{
+        type: Sequelize.STRING(20),
+        allowNull: false
       },
-      long: {
-        type: Sequelize.DECIMAL(10,2)
+      city:{
+        type: Sequelize.STRING(20),
+        allowNull: false
       },
       address: {
-        type: Sequelize.TEXT
-       },
-       address1: {
-        type: Sequelize.TEXT
-       },
-       city: {
-        type: Sequelize.STRING(50)
-       },
-       state: {
-        type: Sequelize.STRING(50)
-       },
-       country: {
-        type: Sequelize.STRING(50)
-       },
-       code: {
-        type: Sequelize.STRING(50)
-       },
-       status: {
+        type: Sequelize.STRING(191),
+        allowNull: false
+      },
+      pin_code: {
+        type: Sequelize.INTEGER(11),
+        allowNull: false
+      },
+      landmark: {
+        type: Sequelize.STRING(191),
+        allowNull: false
+      },
+      image: {
+        type: Sequelize.STRING(191),
+        allowNull: false
+      },
+      status: {
         type: Sequelize.ENUM('0','1'), 
         defaultValue: "0"
       },
-       reset_token: {
-        type: Sequelize.TEXT
-       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false
       }
     });
   },
+
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Users');
   }
+  
 };

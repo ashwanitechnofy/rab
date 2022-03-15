@@ -1,8 +1,3 @@
-<script>
-    var url = window.location.pathname.split( '/' )
-    var segment = url[2];
-</script>
-
 <!-- jQuery  -->
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
@@ -78,14 +73,19 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+<script>
+    var url = window.location.pathname.split( '/' )
+    var segment = url[2];
+</script>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('#datatable').DataTable();
 
-        //Buttons examples
+        /* Buttons examples */
         var table = $('#datatable-buttons').DataTable({
             lengthChange: false,
-            buttons: ['copy', 'excel', 'pdf', 'colvis'],
+            buttons: ['excel', 'pdf'],
             order: [],
             aoColumnDefs: [{ "bSortable": false, "aTargets": [-1]}],
         });
