@@ -1,8 +1,11 @@
 var { reset, submit_reset, thankyou } = require('../src/controller/web');
-var { loginForm, login } = require('../src/controller/admin/authController');
+var { loginForm, login, logout } = require('../src/controller/admin/authController');
 var { dashboard } = require('../src/controller/admin/dashboardController');
 var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate } = require('../src/controller/admin/userController');
 var { categoriesIndex, categoriesCreate, categoriesStore, categoriesView, categoriesEdit, categoriesUpdate, activitiesIndex, activitiesCreate } = require('../src/controller/admin/categoriesController');
+
+var superAdminAuth = require('./middleware/superAdminAuth');
+var adminAuth = require('./middleware/adminAuth');
 
 module.exports = (app) => {
 	app.get(['/reset/:token','/reset'], reset);
@@ -14,7 +17,7 @@ module.exports = (app) => {
 	app.post('/admin/login', login);
 
 	/* Dashboard */
-	app.get('/admin/dashboard', dashboard);
+	app.get('/admin/dashboard', superAdminAuth, dashboard);
 	
 	/* Super Admin / Admin */
 	app.get('/admin/users/sub_admin/index', subAdminIndex);
@@ -67,5 +70,7 @@ module.exports = (app) => {
 	/* Activities */
 	app.get('/admin/activities/index', activitiesIndex);
 	app.get('/admin/activities/create', activitiesCreate);
+
+	app.post('/admin/logout', superAdminAuth, logout);
 
 }
