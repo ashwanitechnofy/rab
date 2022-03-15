@@ -10,8 +10,8 @@ var { Vehicle } = require('./common/files/vehicle')
 var { Activity_upload } = require('./common/files/activity')
 
 
-var Auth = require('./auth/Auth')
-var checkAuthorize = require('./auth/vendorAuthorize')
+var Auth = require('./middleware/auth')
+var checkAuthorize = require('./middleware/vendorAuth')
 
 module.exports = (app) => {
 	app.post('/api/v1/vendor/signup',Upload, register);
