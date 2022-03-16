@@ -29,10 +29,12 @@ controller.loginForm = async (req, res) => {
 */
 controller.login = async (req, res) => {
     try {
-        var roleId = await Role.getIdByRoleName('Super Admin');
+        var superAdminRoleId = await Role.getIdByRoleName('Super Admin');
+        var adminRoleId = await Role.getIdByRoleName('Admin');
         const { email, password } = req.body;
-        var user = await User.getUserOne({ email: email, role_id: roleId });
-        if (user && Object.keys(user).length){
+        var superAdmin = await User.getUserOne({ email: email, role_id: superAdminRoleId });
+        var admin = await User.getUserOne({ email: email, role_id: adminRoleId });
+        if ((superAdmin && Object.keys(superAdmin).length) || (admin && Object.keys(admin).length)){
             const getUp = await User.getUserOne({ email, status: '1' });
             if (getUp && Object.keys(getUp).length) {
                 const match = await bcrypt.compare(password, getUp.password);
@@ -43,7 +45,7 @@ controller.login = async (req, res) => {
                     res.redirect('/admin/dashboard');
                 } else{
                     console.log('@@@@@@@@@@@@  1');
-                    // req.toastr.error("Email and password do not match.");
+                    req.toastr.error("Email and password do not match.");
                     return res.redirect('back');
                 }
             } else{

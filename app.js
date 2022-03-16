@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var toastr = require('express-toastr');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cors = require('cors')
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(flash());
+app.use(toastr());
 app.use(session({
   secret: 'secret',
   resave: true,
@@ -44,6 +46,13 @@ require('./app/routes/web.js')(app);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+// const a = require('./app/helpers/helper').auth
+// a()
+// .then((a)=>{
+//   console.log('@@@@@@@@@@@@@@@@@@@@@', a);
+//   app.locals.abc=a})
+// .catch((err)=>{console.log(err)})
 
 // error handler
 app.use(function(err, req, res, next) {

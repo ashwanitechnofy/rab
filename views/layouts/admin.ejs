@@ -18,7 +18,8 @@
             <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
             <link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
             <link href="/assets/css/metismenu.min.css" rel="stylesheet" type="text/css" />
-            <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+            <link href="/css/toastr.min.css" rel="stylesheet" type="text/css">
+            <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
 
             <script src="/assets/js/modernizr.min.js"></script>
         </head>
@@ -62,7 +63,14 @@
         <!-- App js -->
         <script src="/assets/js/jquery.core.js"></script>
         <script src="/assets/js/jquery.app.js"></script>
+        <script src="/js/toastr.min.js"></script>
         
+        <% } %>
+
+        <% if(locals.toasts) { %>
+            
+            <%= toasts %>
+
         <% } %>
 
     </body>

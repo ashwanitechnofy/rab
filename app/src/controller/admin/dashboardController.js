@@ -12,6 +12,7 @@ const controller = {};
  * @purpose:     To view Super Admin / Admin dashboard
 */
 controller.dashboard = async (req, res) => {
+    // app.locals.abc=req.session.data.first_name
     return res.render('dashboard');
 }
 
