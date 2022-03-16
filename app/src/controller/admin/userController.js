@@ -149,7 +149,9 @@ controller.vendorsEdit = async (req, res) => {
  * @purpose:     To view Users listning
 */
 controller.usersIndex = async (req, res) => {
-    return res.render('manageUsers/users/index');
+    var userRoleId = await Role.getIdByRoleName('User');
+    var users = await User.getUserAll({ role_id: userRoleId });
+    return res.render('manageUsers/users/index', {users: users});
 }
 
 /**

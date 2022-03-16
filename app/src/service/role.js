@@ -7,6 +7,10 @@ const UserOne = Role.hasOne(Users, {
 });
 
 class RoleService {
+    /**
+     * @params:      
+     * @purpose: To get role_id by role name
+    */
     getIdByRoleName(name) {
         return new Promise((resolve, reject) => {
             Role.findOne({

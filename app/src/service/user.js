@@ -16,15 +16,6 @@ class UserService {
         });
     }
 
-    update(body, condition) {
-        return Users.update(body, {
-            returning: true,
-            where: condition
-        }).then(u => {
-            return true;
-        })
-    }
-
     getAdminEmail(param) {
         return new Promise((resolve, reject) => {
             Users.findOne({
@@ -39,6 +30,10 @@ class UserService {
         });
     }
 
+    /**
+     * @params:      
+     * @purpose: To get single user
+    */
     getUserOne(param) {
         return new Promise((resolve, reject) => {
             Users.findOne({
@@ -52,6 +47,10 @@ class UserService {
         });
     }
 
+    /**
+     * @params:      
+     * @purpose: To get all user
+    */
     getUserAll(param) {
         return new Promise((resolve, reject) => {
             Users.findAll({
@@ -78,6 +77,7 @@ class UserService {
             });
         });
     }
+
     checkUserExist(param) {
         return new Promise((resolve, reject) => {
             Users.findOne({
@@ -91,6 +91,36 @@ class UserService {
         });
     }
 
+    /**
+     * @params:      
+     * @purpose: To update single user
+    */
+    update(body, condition) {
+        return Users.update(body, {
+            returning: true,
+            where: condition
+        }).then(u => {
+            return true;
+        })
+    }
+
+    /**
+     * @params:      
+     * @purpose: To update (status) single user
+    */
+    updateStatus() {
+        return Users.update(body, {
+            returning: true,
+            where: condition
+        }).then(u => {
+            return true;
+        })
+    }
+
+    /**
+     * @params:      
+     * @purpose: To delete single user
+    */
     deleteUser(id) {
         return new Promise((resolve, reject) => {
             return Users.destroy({

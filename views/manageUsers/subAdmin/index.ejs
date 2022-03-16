@@ -17,8 +17,7 @@
                 <div class="card-box table-responsive">
                     <div class="col-12 px-3 mb-3 d-flex justify-content-between align-items-center">
                         <h4 class="m-t-0 header-title"><b>Sub Admin</b></h4>
-                        <a href="/admin/users/sub_admin/create"><button type="button"
-                                class="btn btn-custom waves-light waves-effect w-md">Add Sub Admin</button></a>
+                        <a href="/admin/users/sub_admin/create"><button type="button" class="btn btn-custom waves-light waves-effect w-md">Add Sub Admin</button></a>
                     </div>
                     <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0"
                         width="100%">
@@ -35,7 +34,7 @@
                         </thead>
                         <tbody>
 
-                            <% subAdmin.forEach((value, key) => {%>
+                            <% subAdmin.forEach((value, key) => { %>
 
                             <tr>
                                 <td> <%= value.first_name +' '+ value.last_name %> </td>
@@ -68,4 +67,3 @@
         </div>
     </div>
 </div>
-
