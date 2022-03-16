@@ -1,4 +1,4 @@
-const {sequelize,DataTypes} = require('../index');
+const { sequelize, DataTypes } = require('../index');
 const Activity = require('../model/activity')(sequelize, DataTypes);
 const Category = require('../model/category')(sequelize, DataTypes);
 const ActivityAddOns = require('../model/activity_addons')(sequelize, DataTypes);
@@ -13,17 +13,17 @@ const activityCategory = Activity.belongsTo(Category, {
 
 const otherModel = Activity.hasOne(ActivityOther, {
     foreignKey: 'activity_id',
-    as :'otherDetails',
+    as: 'otherDetails',
 });
 
 const listDates = Activity.hasMany(ActivityListDate, {
     foreignKey: 'activity_id',
-    as :'dates'
+    as: 'dates'
 });
 
 const addOns = Activity.hasMany(ActivityAddOns, {
     foreignKey: 'activity_id',
-    as :'addOns'
+    as: 'addOns'
 });
 
 
@@ -32,10 +32,10 @@ Activity.hasMany(Comments, {
 });
 
 class ActivityService {
-    
+
     getOne(param) {
         return new Promise((resolve, reject) => {
-            return Activity.findOne({where:param})
+            return Activity.findOne({ where: param })
                 .then(u => {
                     return resolve(u);
                 }).catch(err => {
@@ -43,11 +43,11 @@ class ActivityService {
                     return reject(err);
                 });
         });
-    }  
+    }
 
     getByAttr(param) {
         return new Promise((resolve, reject) => {
-            return Activity.findOne({where:param,attributes:['id','h_images','v_images','services','item_take']})
+            return Activity.findOne({ where: param, attributes: ['id', 'h_images', 'v_images', 'services', 'item_take'] })
                 .then(u => {
                     console.log(u);
                     return resolve(u);
@@ -56,7 +56,7 @@ class ActivityService {
                     return reject(err);
                 });
         });
-    }  
+    }
 
     update(body, condition) {
         return Activity.update(body, {
@@ -69,12 +69,14 @@ class ActivityService {
 
     getById(param) {
         return new Promise((resolve, reject) => {
-            return Activity.findOne({where:param,include:[{model:Category,as: 'category'},
-            {model:ActivityListDate,as: 'dates',attributes:['start','end']},
-            {model:ActivityOther,as: 'otherDetails'},
-            {model:ActivityAddOns,as: 'addOns',attributes:['id','item','price']},
-            {model:Comments,order:[['id','desc']],limit:20} 
-        ] })
+            return Activity.findOne({
+                where: param, include: [{ model: Category, as: 'category' },
+                { model: ActivityListDate, as: 'dates', attributes: ['start', 'end'] },
+                { model: ActivityOther, as: 'otherDetails' },
+                { model: ActivityAddOns, as: 'addOns', attributes: ['id', 'item', 'price'] },
+                { model: Comments, order: [['id', 'desc']], limit: 20 }
+                ]
+            })
                 .then(u => {
                     return resolve(u);
                 }).catch(err => {
@@ -86,12 +88,13 @@ class ActivityService {
 
     getAll(param) {
         return new Promise((resolve, reject) => {
-            return Activity.findAll({where:param,include:[{model:Category,as: 'category'},
-            {model:ActivityListDate,as :'dates',attributes:['start','end']},
-            {model:ActivityOther,as: 'otherDetails'},
-            {model:ActivityAddOns,as: 'addOns',attributes:['id','item','price']},
-            {model:Comments,order:[['id','desc']],limit:20} 
-        ]
+            return Activity.findAll({
+                where: param, include: [{ model: Category, as: 'category' },
+                { model: ActivityListDate, as: 'dates', attributes: ['start', 'end'] },
+                { model: ActivityOther, as: 'otherDetails' },
+                { model: ActivityAddOns, as: 'addOns', attributes: ['id', 'item', 'price'] },
+                { model: Comments, order: [['id', 'desc']], limit: 20 }
+                ]
             })
                 .then(u => {
                     return resolve(u);
@@ -126,25 +129,25 @@ class ActivityService {
 
     delete(id) {
         return new Promise((resolve, reject) => {
-                return Activity.destroy({
-                    where: {
-                        id: id
-                    }
-                    // truncate: true /* this will ignore where and truncate the table instead */
-                }).then(async u => {
-                    if(u){
-                        await ActivityListDate.destroy({where: {activity_id: id }});
-                       await ActivityAddOns.destroy({where: {activity_id: id }});    
-                       await Comments.destroy({where: {activity_id: id }});    
-                       await ActivityOther.destroy({where: {activity_id: id }});      
-                       
-                    }
-                    return resolve(u);
-                }).catch(err => {
-                    return reject(err);
-                });
+            return Activity.destroy({
+                where: {
+                    id: id
+                }
+                // truncate: true /* this will ignore where and truncate the table instead */
+            }).then(async u => {
+                if (u) {
+                    await ActivityListDate.destroy({ where: { activity_id: id } });
+                    await ActivityAddOns.destroy({ where: { activity_id: id } });
+                    await Comments.destroy({ where: { activity_id: id } });
+                    await ActivityOther.destroy({ where: { activity_id: id } });
+
+                }
+                return resolve(u);
+            }).catch(err => {
+                return reject(err);
+            });
         });
-}
+    }
 
 }
 module.exports = ActivityService;

@@ -7,15 +7,14 @@ module.exports = {
         type: Sequelize.INTEGER(11),
         primaryKey: true,
         autoIncrement: true,
-        type: Sequelize.INTEGER,
+        allowNull: false
       },
       first_name: {
         type: Sequelize.STRING(20),
         allowNull: false
       },
       last_name: {
-        type: Sequelize.STRING(20),
-        allowNull: false
+        type: Sequelize.STRING(20)
       },
       role_id: {
         type: Sequelize.INTEGER(11),
@@ -33,9 +32,11 @@ module.exports = {
       },
       mobile_no: {
         type: Sequelize.STRING(20),
+        allowNull: false
       },
       gender: {
         type: Sequelize.STRING(10),
+        allowNull: false
       },
       dob: {
         type: Sequelize.DATE,
@@ -71,7 +72,16 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM('0','1'), 
-        defaultValue: "0"
+        defaultValue: "0",
+        allowNull: false
+      },
+      created_by: {
+        type: Sequelize.INTEGER(11),
+        allowNull: false
+      },
+      updated_by: {
+        type: Sequelize.INTEGER(11),
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,

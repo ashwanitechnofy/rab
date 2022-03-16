@@ -1,7 +1,9 @@
-// const UserService = require("../../service/user");
+const RoleService = require("../../service/role");
+const UserService = require("../../service/user");
 // const bcrypt = require('bcrypt');
 
-// const User = new UserService();
+const Role = new RoleService();
+const User = new UserService();
 
 const controller = {};
 
@@ -14,7 +16,9 @@ const controller = {};
  * @purpose:     To view Sub Admin listning
 */
 controller.subAdminIndex = async (req, res) => {
-    return res.render('manageUsers/subAdmin/index');
+    var adminRoleId = await Role.getIdByRoleName('Admin');
+    var subAdmin = await User.getUserAll({ role_id: adminRoleId });
+    return res.render('manageUsers/subAdmin/index', {subAdmin: subAdmin});
 }
 
 /**
@@ -34,6 +38,7 @@ controller.subAdminCreate = async (req, res) => {
  * @purpose:     To store Sub Admin
 */
 controller.subAdminStore = async (req, res) => {
+    console.log("****************** Store");
     console.log('okk');
 }
 
@@ -44,6 +49,7 @@ controller.subAdminStore = async (req, res) => {
  * @purpose:     To view Sub Admin detail
 */
 controller.subAdminView = async (req, res) => {
+    console.log("****************** View");
     return res.render('manageUsers/subAdmin/view');
 }
 
@@ -54,8 +60,33 @@ controller.subAdminView = async (req, res) => {
  * @purpose:     To view Sub Admin edit form
 */
 controller.subAdminEdit = async (req, res) => {
+    console.log("****************** Edit");
     return res.render('manageUsers/subAdmin/edit');
 }
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Sub Admin update
+*/
+controller.subAdminUpdateStatus = async (req, res) => {
+    console.log("****************** Update Status");
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To delete Sub Admin details
+*/
+controller.subAdminDelete = async (req, res) => {
+    // var subAdmin = await User.deleteUser({ _id:req.params.id });
+    console.log("****************** Delete");
+}
+
+
+
 
 /********** Vendor **********/
 

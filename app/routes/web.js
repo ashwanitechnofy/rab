@@ -1,7 +1,7 @@
 var { reset, submit_reset, thankyou } = require('../src/controller/web');
 var { loginForm, login, logout } = require('../src/controller/admin/authController');
 var { dashboard } = require('../src/controller/admin/dashboardController');
-var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate } = require('../src/controller/admin/userController');
+var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, subAdminUpdateStatus, subAdminDelete, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate } = require('../src/controller/admin/userController');
 var { categoriesIndex, categoriesCreate, categoriesStore, categoriesView, categoriesEdit, categoriesUpdate, activitiesIndex, activitiesCreate } = require('../src/controller/admin/categoriesController');
 
 var adminAuth = require('./middleware/adminAuth');
@@ -25,6 +25,9 @@ module.exports = (app) => {
 	app.get('/admin/users/sub_admin/view', subAdminView);
 	app.get('/admin/users/sub_admin/edit', subAdminEdit);
 	// app.post('/admin/users/sub_admin/update/:id', subAdminUpdate);
+	app.post('/admin/users/sub_admin/update_status/:id', subAdminUpdateStatus);
+	app.post('/admin/users/sub_admin/delete/:id', subAdminDelete);
+
 
 	/* Vendors */
 	app.get('/admin/users/vendors/index', vendorsIndex);

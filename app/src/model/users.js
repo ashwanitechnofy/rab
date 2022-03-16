@@ -16,85 +16,82 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-     /* Users.hasMany(models.user_activity, {
-        foreignKey: 'user_id',
-        as: 'user_activity'
-      });*/
+      /* Users.hasMany(models.user_activity, {
+         foreignKey: 'user_id',
+         as: 'user_activity'
+       });*/
     }
   }
   Users.init({
     first_name: {
-      type: DataTypes.STRING(150),
-      allowNull:false,
+      type: DataTypes.STRING(20),
+      allowNull: false
     },
     last_name: {
-      type: DataTypes.STRING(150),
+      type: DataTypes.STRING(20)
     },
     role_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
     email: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING(50),
       allowNull: false,
       unique: true,
-      email:true
+      email: true
     },
     password: {
-      type: DataTypes.STRING(250),
+      type: DataTypes.STRING(255),
       allowNull: false
     },
-    gender: {
-      type: DataTypes.STRING(5),
-    },
     mobile_no: {
-    type: DataTypes.INTEGER(11),
-   },
-   alternate_mobile:{
-    type: DataTypes.INTEGER(11),
-  },
-    age: {
-      type: DataTypes.INTEGER(5),
+      type: DataTypes.INTEGER(20),
     },
-    lat: {
-      type: DataTypes.DECIMAL(10,2)
+    gender: {
+      type: DataTypes.STRING(10),
+      allowNull: false
     },
-    long: {
-      type: DataTypes.DECIMAL(10,2)
+    dob: {
+      type: DataTypes.DATE,
+      allowNull: false
     },
-    photo: {
-      type: DataTypes.TEXT,
-      get() {
-        if(this.getDataValue('photo')){
-          return config.BASE_URL+'/image/profile/'+this.getDataValue('photo');
-    }
-  },
+    country: {
+      type: DataTypes.STRING(20),
+      allowNull: false
+    },
+    state: {
+      type: DataTypes.STRING(20),
+      allowNull: false
+    },
+    city: {
+      type: DataTypes.STRING(20),
+      allowNull: false
     },
     address: {
-      type: DataTypes.TEXT
-     },
-     address1: {
-      type: DataTypes.TEXT
-     },
-     city: {
-      type: DataTypes.STRING(50)
-     },
-     state: {
-      type: DataTypes.STRING(50)
-     },
-     country: {
-      type: DataTypes.STRING(50)
-     },
-     code: {
-      type: DataTypes.STRING(50)
-     },
-     status: {
-      type: DataTypes.ENUM('0','1'), 
-      defaultValue: "0"
+      type: DataTypes.STRING(191),
+      allowNull: false
     },
-     reset_token: {
-      type: DataTypes.TEXT
-     },
+    pin_code: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
+    },
+    landmark: {
+      type: DataTypes.STRING(191),
+      allowNull: false
+    },
+    image: {
+      type: DataTypes.TEXT,
+      get() {
+        if (this.getDataValue('image')) {
+          return config.BASE_URL + '/image/profile/' + this.getDataValue('image');
+        }
+      },
+    },
+    status: {
+      type: DataTypes.ENUM('0', '1'),
+      defaultValue: "0",
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'users',

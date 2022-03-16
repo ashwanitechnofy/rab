@@ -52,6 +52,19 @@ class UserService {
         });
     }
 
+    getUserAll(param) {
+        return new Promise((resolve, reject) => {
+            Users.findAll({
+                where: param
+            }).then(u => {
+                return resolve(u);
+            }).catch(err => {
+                console.log('err>>>>>>', err);
+                return reject(err);
+            });
+        });
+    }
+
     getUserSpecAttr(param,attributes) {
         return new Promise((resolve, reject) => {
             Users.findOne({
@@ -72,6 +85,24 @@ class UserService {
                 where: param
             }).then(user => {
                 return resolve(user);
+            }).catch(err => {
+                return reject(err);
+            });
+        });
+    }
+
+    deleteUser(id) {
+        return new Promise((resolve, reject) => {
+            return Users.destroy({
+                where: { id: id }
+            }).then(async u => {
+                if (u) {
+                    // await ActivityListDate.destroy({ where: { activity_id: id } });
+                    // await ActivityAddOns.destroy({ where: { activity_id: id } });
+                    // await Comments.destroy({ where: { activity_id: id } });
+                    // await ActivityOther.destroy({ where: { activity_id: id } });
+                }
+                return resolve(u);
             }).catch(err => {
                 return reject(err);
             });
