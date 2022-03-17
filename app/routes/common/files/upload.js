@@ -6,7 +6,7 @@ var storageK = multer.diskStorage({
 		if(file.fieldname == 'identity')
 		callback(null, 'app/assets/image/kyc');
 
-		if(file.fieldname == 'photo')
+		if(file.fieldname == 'image')
 		callback(null, 'app/assets/image/profile');
 
 		if(file.fieldname == 'visiting_image')
@@ -31,7 +31,7 @@ files.Upload = kUpload.fields([{
 	maxCount:1
 },
 {
-	name: 'photo',
+	name: 'image',
 	maxCount:1
 },
 {

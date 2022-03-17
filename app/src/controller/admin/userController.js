@@ -71,22 +71,22 @@ controller.subAdminEdit = async (req, res) => {
  * @purpose:     To Sub Admin update
 */
 controller.subAdminUpdateStatus = async (req, res) => {
-    console.log("****************** Update Status");
+    let id = req.params.id;
+    let status = req.body.status == '1' ? '0' : '1';
+    await User.update({status: status}, {id: id});
+    return res.redirect('back');
 }
 
 /**
  * @params:      
  * @createdDate: MARCH-2022 (mm-yyyy)
  * @developer:   TCHNOFY INDIA
- * @purpose:     To delete Sub Admin details
+ * @purpose:     To delete Sub Admin
 */
 controller.subAdminDelete = async (req, res) => {
-    // var subAdmin = await User.deleteUser({ _id:req.params.id });
-    console.log("****************** Delete");
+    await User.deleteUser(req.params.id);
+    return res.redirect('back');
 }
-
-
-
 
 /********** Vendor **********/
 
@@ -192,6 +192,30 @@ controller.usersView = async (req, res) => {
 */
 controller.usersEdit = async (req, res) => {
     return res.render('manageUsers/users/edit');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To user update
+*/
+controller.usersUpdateStatus = async (req, res) => {
+    let id = req.params.id;
+    let status = req.body.status == '1' ? '0' : '1';
+    await User.update({status: status}, {id: id});
+    return res.redirect('back');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To delete user
+*/
+controller.usersDelete = async (req, res) => {
+    await User.deleteUser(req.params.id);
+    return res.redirect('back');
 }
 
 /********** Taxi Driver **********/
