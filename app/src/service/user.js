@@ -106,19 +106,6 @@ class UserService {
 
     /**
      * @params:      
-     * @purpose: To update (status) single user
-    */
-    updateStatus() {
-        return Users.update(body, {
-            returning: true,
-            where: condition
-        }).then(u => {
-            return true;
-        })
-    }
-
-    /**
-     * @params:      
      * @purpose: To delete single user
     */
     deleteUser(id) {
@@ -126,12 +113,7 @@ class UserService {
             return Users.destroy({
                 where: { id: id }
             }).then(async u => {
-                if (u) {
-                    // await ActivityListDate.destroy({ where: { activity_id: id } });
-                    // await ActivityAddOns.destroy({ where: { activity_id: id } });
-                    // await Comments.destroy({ where: { activity_id: id } });
-                    // await ActivityOther.destroy({ where: { activity_id: id } });
-                }
+                // await ActivityListDate.destroy({ where: { activity_id: id } });
                 return resolve(u);
             }).catch(err => {
                 return reject(err);
