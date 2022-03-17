@@ -43,7 +43,9 @@
                                 <td><%= value.gender %></td>
                                 <td><%= value.dob %></td>
                                 <td><input type="checkbox" class="sa-status" name="status" data-plugin="switchery" data-color="#1bb99a" data-id="<%= value.id %>" value="<%= value.status %>"  <%= (value.status === '1') ? 'checked' : '' %> /></td>
-                                <form id="status-form-<%= value.id %>" action="/admin/users/sub_admin/update_status/<%= value.id %>" method="post" style="display: none;" ></form>    
+                                <form id="status-form-<%= value.id %>" action="/admin/users/sub_admin/update_status/<%= value.id %>" method="post" style="display: none;" >
+                                    <input class="__statusUpdate" type="text" name="status" value="<%= value.status %>" hidden>
+                                </form>    
                                 <td class="text-center">
                                     <a href="#" class="hidden on-editing save-row pr-2 text-info" data-toggle="tooltip"
                                         data-placement="top" title="" data-original-title="View"><i
