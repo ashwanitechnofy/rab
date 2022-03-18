@@ -374,9 +374,8 @@ if ($("#countryId").length > 0) {
             });
         };
     }
-}
 
-jQuery(function() {
+    jQuery(function() {
     var loc = new locationInfo();
     loc.getCountries();
     jQuery(".countries").on("change", function(ev) {
@@ -402,6 +401,7 @@ jQuery(function() {
         }
     });
 });
+}
 </script>
 
 
