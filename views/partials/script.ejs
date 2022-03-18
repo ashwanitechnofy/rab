@@ -190,25 +190,25 @@
 <script>
 if ($("#countryId").length > 0) {
     function ajaxCall() {
-    this.send = function(data, url, method, success, type) {
-        type = type||'json';
-        var successRes = function(data) {
-            success(data);
+        this.send = function(data, url, method, success, type) {
+            type = type||'json';
+            var successRes = function(data) {
+                success(data);
+            }
+            var errorRes = function(e) {
+                console.log(e);
+            }
+            jQuery.ajax({
+                url: url,
+                type: method,
+                data: data,
+                success: successRes,
+                error: errorRes,
+                dataType: type,
+                timeout: 60000
+            });
         }
-        var errorRes = function(e) {
-            console.log(e);
-        }
-        jQuery.ajax({
-            url: url,
-            type: method,
-            data: data,
-            success: successRes,
-            error: errorRes,
-            dataType: type,
-            timeout: 60000
-        });
     }
-}
 
     function locationInfo() {
         var rootUrl = "https://geodata.solutions/api/api.php";
@@ -374,8 +374,9 @@ if ($("#countryId").length > 0) {
             });
         };
     }
+}
 
-    jQuery(function() {
+jQuery(function() {
     var loc = new locationInfo();
     loc.getCountries();
     jQuery(".countries").on("change", function(ev) {
@@ -401,5 +402,7 @@ if ($("#countryId").length > 0) {
         }
     });
 });
-}
 </script>
+
+
+
