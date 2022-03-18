@@ -99,11 +99,7 @@ controller.subAdminEdit = async (req, res) => {
  * @developer:   TCHNOFY INDIA
  * @purpose:     To Sub Admin update
 */
-controller.subAdminUpdateStatus = async (req, res) => {
-    // let id = req.params.id;
-    // let status = req.body.status == '1' ? '0' : '1';
-    // await User.update({status: status}, {id: id});
-    // return res.redirect('back');
+controller.subAdminUpdate = async (req, res) => {
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
@@ -121,7 +117,7 @@ controller.subAdminUpdateStatus = async (req, res) => {
             }
             const signUp = await User.register(req.body);
             if (signUp) {
-                // req.toastr.error("User added successfully.");
+                // req.toastr.error("User updated successfully.");
                 return res.redirect('/admin/users/sub_admin/index');
             } else{
                 // req.toastr.error("Internal server error.");
@@ -132,6 +128,19 @@ controller.subAdminUpdateStatus = async (req, res) => {
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Sub Admin update status
+*/
+controller.subAdminUpdateStatus = async (req, res) => {
+    let id = req.params.id;
+    let status = req.body.status == '1' ? '0' : '1';
+    await User.update({status: status}, {id: id});
+    return res.redirect('back');
 }
 
 /**
@@ -228,7 +237,34 @@ controller.usersCreate = async (req, res) => {
  * @purpose:     To store Users
 */
 controller.usersStore = async (req, res) => {
-    console.log('okk');
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Admin');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+            }
+            const signUp = await User.register(req.body);
+            if (signUp) {
+                // req.toastr.error("User added successfully.");
+                return res.redirect('/admin/users/users/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
 }
 
 /**
@@ -248,7 +284,46 @@ controller.usersView = async (req, res) => {
  * @purpose:     To view Users edit form
 */
 controller.usersEdit = async (req, res) => {
-    return res.render('manageUsers/users/edit');
+    var adminRoleId = await Role.getIdByRoleName('Admin');
+    var user = await User.getUserOne({ id: req.params.id,  role_id: adminRoleId});
+    return res.render('manageUsers/users/edit', {user: user});
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Users update
+*/
+controller.usersUpdate = async (req, res) => {
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Admin');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+            }
+            const signUp = await User.register(req.body);
+            if (signUp) {
+                // req.toastr.error("User updated successfully.");
+                return res.redirect('/admin/users/users/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
 }
 
 /**
