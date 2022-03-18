@@ -6,6 +6,8 @@ var { categoriesIndex, categoriesCreate, categoriesStore, categoriesView, catego
 
 var adminAuth = require('./middleware/adminAuth');
 
+var { Upload } = require('./common/files/upload');
+
 module.exports = (app) => {
 	app.get(['/reset/:token','/reset'], reset);
     app.post('/reset/:token', submit_reset);
@@ -19,14 +21,14 @@ module.exports = (app) => {
 	app.get('/admin/dashboard', adminAuth, dashboard);
 	
 	/* Super Admin / Admin */
-	app.get('/admin/users/sub_admin/index', subAdminIndex);
-	app.get('/admin/users/sub_admin/create', subAdminCreate);
-	app.post('/admin/users/sub_admin/store', subAdminStore);
-	app.get('/admin/users/sub_admin/view', subAdminView);
-	app.get('/admin/users/sub_admin/edit', subAdminEdit);
-	// app.post('/admin/users/sub_admin/update/:id', subAdminUpdate);
-	app.post('/admin/users/sub_admin/update_status/:id', subAdminUpdateStatus);
-	app.post('/admin/users/sub_admin/delete/:id', subAdminDelete);
+	app.get('/admin/users/sub_admin/index', adminAuth, subAdminIndex);
+	app.get('/admin/users/sub_admin/create', adminAuth, subAdminCreate);
+	app.post('/admin/users/sub_admin/store', adminAuth, Upload, subAdminStore);
+	app.get('/admin/users/sub_admin/view', adminAuth, subAdminView);
+	app.get('/admin/users/sub_admin/edit/:id', adminAuth, subAdminEdit);
+	// app.post('/admin/users/sub_admin/update/:id', adminAuth, Upload, subAdminUpdate);
+	app.post('/admin/users/sub_admin/update_status/:id', adminAuth, subAdminUpdateStatus);
+	app.post('/admin/users/sub_admin/delete/:id', adminAuth, subAdminDelete);
 
 
 	/* Vendors */
@@ -38,14 +40,14 @@ module.exports = (app) => {
 	// app.post('/admin/users/vendors/update/:id', vendorsUpdate);
 
 	/* Users */
-	app.get('/admin/users/users/index', usersIndex);
-	app.get('/admin/users/users/create', usersCreate);
-	app.post('/admin/users/users/store', usersStore);
-	app.get('/admin/users/users/view', usersView);
-	app.get('/admin/users/users/edit', usersEdit);
+	app.get('/admin/users/users/index', adminAuth, usersIndex);
+	app.get('/admin/users/users/create', adminAuth, usersCreate);
+	app.post('/admin/users/users/store', adminAuth, usersStore);
+	app.get('/admin/users/users/view', adminAuth, usersView);
+	app.get('/admin/users/users/edit', adminAuth, usersEdit);
 	// app.post('/admin/users/users/update/:id', usersUpdate);
-	app.post('/admin/users/users/update_status/:id', usersUpdateStatus);
-	app.post('/admin/users/users/delete/:id', usersDelete);
+	app.post('/admin/users/users/update_status/:id', adminAuth, usersUpdateStatus);
+	app.post('/admin/users/users/delete/:id', adminAuth, usersDelete);
 
 	/* Taxi Drivers */
 	app.get('/admin/users/taxi_drivers/index', taxiDriversIndex);

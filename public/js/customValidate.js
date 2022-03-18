@@ -12,7 +12,6 @@ var manageUserRules = {
         maxlength: 10,
     },
     last_name : {
-        required : true,
         minlength: 3,
         maxlength: 10,
     },
@@ -58,8 +57,6 @@ var manageUserRules = {
     },
     landmark : {
         required : true,
-        minlength: 3,
-        maxlength: 10,
     },
     image : {
         required : true,
@@ -72,7 +69,6 @@ var manageUserMessage = {
         maxlength: "First name may not be greater than 10 characters.",
     },
     last_name : {
-        required : "Please enter your last name.",
         maxlength: "Last name may not be greater than 10 characters.",
     },
     email : {
@@ -116,7 +112,6 @@ var manageUserMessage = {
     },
     landmark : {
         required : "Please enter your landmark.",
-        maxlength: "Landmark may not be greater than 10 characters.",
     },
     image : {
         required : "Please upload your image.",
