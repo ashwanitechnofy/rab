@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 const { request } = require("express");
+=======
+var bcrypt = require('bcrypt');
+
+>>>>>>> 7a85d02855cfba8a2b8130ea14af4535a8e7a35f
 const RoleService = require("../../service/role");
 const UserService = require("../../service/user");
 // const bcrypt = require('bcrypt');
@@ -39,9 +44,34 @@ controller.subAdminCreate = async (req, res) => {
  * @purpose:     To store Sub Admin
 */
 controller.subAdminStore = async (req, res) => {
-    console.log('Check ######################', req.body);
-    console.log("****************** Store");
-    console.log('okk');
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Admin');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+            }
+            const signUp = await User.register(req.body);
+            if (signUp) {
+                // req.toastr.error("User added successfully.");
+                return res.redirect('/admin/users/sub_admin/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
 }
 
 /**
@@ -62,8 +92,9 @@ controller.subAdminView = async (req, res) => {
  * @purpose:     To view Sub Admin edit form
 */
 controller.subAdminEdit = async (req, res) => {
-    console.log("****************** Edit");
-    return res.render('manageUsers/subAdmin/edit');
+    var adminRoleId = await Role.getIdByRoleName('Admin');
+    var subAdmin = await User.getUserOne({ id: req.params.id,  role_id: adminRoleId});
+    return res.render('manageUsers/subAdmin/edit', {subAdmin: subAdmin});
 }
 
 /**
@@ -73,10 +104,38 @@ controller.subAdminEdit = async (req, res) => {
  * @purpose:     To Sub Admin update
 */
 controller.subAdminUpdateStatus = async (req, res) => {
-    let id = req.params.id;
-    let status = req.body.status == '1' ? '0' : '1';
-    await User.update({status: status}, {id: id});
-    return res.redirect('back');
+    // let id = req.params.id;
+    // let status = req.body.status == '1' ? '0' : '1';
+    // await User.update({status: status}, {id: id});
+    // return res.redirect('back');
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Admin');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+            }
+            const signUp = await User.register(req.body);
+            if (signUp) {
+                // req.toastr.error("User added successfully.");
+                return res.redirect('/admin/users/sub_admin/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
 }
 
 /**

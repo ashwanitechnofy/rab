@@ -2,7 +2,6 @@ var multer = require('multer');
 let files = {};
 var storageK = multer.diskStorage({
 	destination: function (req, file, callback) {
-		console.log(file);
 		if(file.fieldname == 'identity')
 		callback(null, 'app/assets/image/kyc');
 
@@ -19,24 +18,26 @@ var storageK = multer.diskStorage({
 		callback(null, Date.now() + "_" + file.originalname);
 	}
 });
-var kUpload = multer({
-	storage: storageK
-})
-files.Upload = kUpload.fields([{
-	name: 'identity',
-	maxCount:1
-},
-{
-	name: 'certificate',
-	maxCount:1
-},
-{
-	name: 'image',
-	maxCount:1
-},
-{
-	name: 'visiting_image',
-	maxCount:1
-}]);
+
+var kUpload = multer({ storage: storageK })
+
+files.Upload = kUpload.fields([
+	{
+		name: 'identity',
+		maxCount:1
+	},
+	{
+		name: 'certificate',
+		maxCount:1
+	},
+	{
+		name: 'image',
+		maxCount:1
+	},
+	{
+		name: 'visiting_image',
+		maxCount:1
+	}
+]);
 
 module.exports = files;

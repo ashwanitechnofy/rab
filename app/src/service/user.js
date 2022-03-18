@@ -19,7 +19,7 @@ class UserService {
     getAdminEmail(param) {
         return new Promise((resolve, reject) => {
             Users.findOne({
-                where: {role_id:'1',status:'1'},
+                where: {role_id:'1', status:'1'},
                 attributes:['first_name','last_name','email']
             }).then(u => {
                 return resolve(u);
