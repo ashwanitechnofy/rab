@@ -1,3 +1,4 @@
+const { request } = require("express");
 const RoleService = require("../../service/role");
 const UserService = require("../../service/user");
 // const bcrypt = require('bcrypt');
@@ -38,6 +39,7 @@ controller.subAdminCreate = async (req, res) => {
  * @purpose:     To store Sub Admin
 */
 controller.subAdminStore = async (req, res) => {
+    console.log('Check ######################', req.body);
     console.log("****************** Store");
     console.log('okk');
 }
