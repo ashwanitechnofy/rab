@@ -26,7 +26,7 @@ module.exports = (app) => {
 	app.post('/admin/users/sub_admin/store', adminAuth, Upload, subAdminStore);
 	app.get('/admin/users/sub_admin/view', adminAuth, subAdminView);
 	app.get('/admin/users/sub_admin/edit/:id', adminAuth, subAdminEdit);
-	// app.post('/admin/users/sub_admin/update/:id', adminAuth, Upload, subAdminUpdate);
+	app.post('/admin/users/sub_admin/update/:id', adminAuth, Upload, subAdminUpdate);
 	app.post('/admin/users/sub_admin/update_status/:id', adminAuth, subAdminUpdateStatus);
 	app.post('/admin/users/sub_admin/delete/:id', adminAuth, subAdminDelete);
 
@@ -45,7 +45,7 @@ module.exports = (app) => {
 	app.post('/admin/users/users/store', adminAuth, usersStore);
 	app.get('/admin/users/users/view', adminAuth, usersView);
 	app.get('/admin/users/users/edit', adminAuth, usersEdit);
-	// app.post('/admin/users/users/update/:id', usersUpdate);
+	app.post('/admin/users/users/update/:id', adminAuth, Upload, usersUpdate);
 	app.post('/admin/users/users/update_status/:id', adminAuth, usersUpdateStatus);
 	app.post('/admin/users/users/delete/:id', adminAuth, usersDelete);
 
