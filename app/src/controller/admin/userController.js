@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-const { request } = require("express");
-=======
 var bcrypt = require('bcrypt');
 
->>>>>>> 7a85d02855cfba8a2b8130ea14af4535a8e7a35f
 const RoleService = require("../../service/role");
 const UserService = require("../../service/user");
 // const bcrypt = require('bcrypt');
