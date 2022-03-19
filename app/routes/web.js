@@ -1,7 +1,7 @@
 var { reset, submit_reset, thankyou } = require('../src/controller/web');
 var { loginForm, login, logout } = require('../src/controller/admin/authController');
 var { dashboard } = require('../src/controller/admin/dashboardController');
-var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, subAdminUpdateStatus, subAdminDelete, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, usersUpdateStatus, usersDelete, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate } = require('../src/controller/admin/userController');
+var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, subAdminUpdateStatus, subAdminDelete, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, usersUpdateStatus, usersDelete, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate, hotelsUpdateStatus, hotelsDelete } = require('../src/controller/admin/userController');
 var { categoriesIndex, categoriesCreate, categoriesStore, categoriesView, categoriesEdit, categoriesUpdate, activitiesIndex, activitiesCreate } = require('../src/controller/admin/categoriesController');
 
 var adminAuth = require('./middleware/adminAuth');
@@ -62,8 +62,10 @@ module.exports = (app) => {
 	app.get('/admin/users/hotels/create', hotelsCreate);
 	app.post('/admin/users/hotels/store', hotelsStore);
 	app.get('/admin/users/hotels/view', hotelsView);
-	app.get('/admin/users/hotels/edit', hotelsEdit);
-	// app.post('/admin/users/hotels/update/:id', hotelsUpdate);
+	app.get('/admin/users/hotels/edit/:id', hotelsEdit);
+	app.post('/admin/users/hotels/update/:id', hotelsUpdate);
+	app.post('/admin/users/hotels/update_status/:id', hotelsUpdateStatus);
+	app.post('/admin/users/hotels/delete/:id', hotelsDelete);
 
 	/* Categories */
 	app.get('/admin/categories/index', categoriesIndex);
