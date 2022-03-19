@@ -2,7 +2,7 @@ var { reset, submit_reset, thankyou } = require('../src/controller/web');
 var { loginForm, login, logout } = require('../src/controller/admin/authController');
 var { dashboard } = require('../src/controller/admin/dashboardController');
 var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, subAdminUpdateStatus, subAdminDelete, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, usersUpdateStatus, usersDelete, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate } = require('../src/controller/admin/userController');
-var { categoriesIndex, categoriesCreate, categoriesStore, categoriesView, categoriesEdit, categoriesUpdate, activitiesIndex, activitiesCreate } = require('../src/controller/admin/categoriesController');
+var { categoriesIndex, categoriesCreate, categoriesStore, categoriesView, categoriesEdit, categoriesUpdate, categoriesUpdateStatus, activitiesIndex, activitiesCreate } = require('../src/controller/admin/categoriesController');
 
 var adminAuth = require('./middleware/adminAuth');
 
@@ -44,7 +44,7 @@ module.exports = (app) => {
 	app.get('/admin/users/users/create', adminAuth, usersCreate);
 	app.post('/admin/users/users/store', adminAuth, usersStore);
 	app.get('/admin/users/users/view', adminAuth, usersView);
-	app.get('/admin/users/users/edit', adminAuth, usersEdit);
+	app.get('/admin/users/users/edit/:id', adminAuth, usersEdit);
 	app.post('/admin/users/users/update/:id', adminAuth, Upload, usersUpdate);
 	app.post('/admin/users/users/update_status/:id', adminAuth, usersUpdateStatus);
 	app.post('/admin/users/users/delete/:id', adminAuth, usersDelete);
@@ -66,12 +66,13 @@ module.exports = (app) => {
 	// app.post('/admin/users/hotels/update/:id', hotelsUpdate);
 
 	/* Categories */
-	app.get('/admin/categories/index', categoriesIndex);
-	app.get('/admin/categories/create', categoriesCreate);
-	app.post('/admin/categories/store', categoriesStore);
-	app.get('/admin/categories/view', categoriesView);
-	app.get('/admin/categories/edit', categoriesEdit);
-	// app.post('/admin/categories/update/:id', categoriesUpdate);
+	app.get('/admin/categories/index', adminAuth, categoriesIndex);
+	app.get('/admin/categories/create', adminAuth, categoriesCreate);
+	app.post('/admin/categories/store', adminAuth, categoriesStore);
+	app.get('/admin/categories/view', adminAuth, categoriesView);
+	app.get('/admin/categories/edit/:id', adminAuth, categoriesEdit);
+	app.post('/admin/categories/update/:id', adminAuth, categoriesUpdate);
+	app.post('/admin/categories/update_status/:id', adminAuth, categoriesUpdateStatus);
 
 	/* Activities */
 	app.get('/admin/activities/index', activitiesIndex);

@@ -13,6 +13,11 @@ module.exports = {
         unique: true,
         allowNull: false
       },
+      status: {
+        type: Sequelize.ENUM('0','1'), 
+        defaultValue: "0",
+        allowNull: false
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false

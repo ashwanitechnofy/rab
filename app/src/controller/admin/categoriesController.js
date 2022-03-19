@@ -1,29 +1,9 @@
-// const UserService = require("../../service/user");
-// const bcrypt = require('bcrypt');
-
-// const User = new UserService();
+const {sequelize,DataTypes} = require('../../index');
+const Category = require('../../model/category')(sequelize, DataTypes);
 
 const controller = {};
 
-/**
- * @params:      
- * @createdDate: MARCH-2022 (mm-yyyy)
- * @developer:   TCHNOFY INDIA
- * @purpose:     To view Activities listning
-*/
-controller.activitiesIndex = async (req, res) => {
-    return res.render('manageCategories/activities/index');
-}
-
-/**
- * @params:      
- * @createdDate: MARCH-2022 (mm-yyyy)
- * @developer:   TCHNOFY INDIA
- * @purpose:     To view Activities Create
-*/
-controller.activitiesCreate = async (req, res) => {
-    return res.render('manageCategories/activities/create');
-}
+/********** Categories **********/
 
 /**
  * @params:      
@@ -32,7 +12,12 @@ controller.activitiesCreate = async (req, res) => {
  * @purpose:     To view Categories listning
 */
 controller.categoriesIndex = async (req, res) => {
-    return res.render('manageCategories/categories/index');
+    Category.findAll().then(data => {
+        return res.render('manageCategories/categories/index', {data: data});
+    }).catch(err => {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    });
 }
 
 /**
@@ -52,7 +37,19 @@ controller.categoriesCreate = async (req, res) => {
  * @purpose:     To store categories
 */
 controller.categoriesStore = async (req, res) => {
-    console.log('okk');
+    // try {
+        const category = await Category.create(req.body);
+        if (category) {
+            // req.toastr.success("Category added successfully.");
+            return res.redirect('/admin/categories/index');
+        } else{
+            // req.toastr.error("Internal server error.");
+            return res.redirect('back');
+        }
+    // } catch (err) {
+    //     // req.toastr.error("Somthing went wrong.");
+    //     return res.redirect('back');
+    // }
 }
 
 /**
@@ -72,7 +69,70 @@ controller.categoriesView = async (req, res) => {
  * @purpose:     To view categories edit form
 */
 controller.categoriesEdit = async (req, res) => {
-    return res.render('manageCategories/categories/edit');
+    Category.findOne({where: {id: req.params.id}}).then(data => {
+        return res.render('manageCategories/categories/edit', {data: data});
+    }).catch(err => {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    });
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To categories update
+*/
+controller.categoriesUpdate = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const category = await Category.update(req.body, {where: {id: id}});
+        if (category) {
+            // req.toastr.success("Category added successfully.");
+            return res.redirect('/admin/categories/index');
+        } else{
+            // req.toastr.error("Internal server error.");
+            return res.redirect('back');
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To categories update status
+*/
+controller.categoriesUpdateStatus = async (req, res) => {
+    let id = req.params.id;
+    let status = req.body.status == '1' ? '0' : '1';
+    await Category.update({status: status}, {where: {id: id}});
+    return res.redirect('back');
+}
+
+/********** Activities **********/
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To view Activities listning
+*/
+controller.activitiesIndex = async (req, res) => {
+    return res.render('manageCategories/activities/index');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To view Activities Create
+*/
+controller.activitiesCreate = async (req, res) => {
+    return res.render('manageCategories/activities/create');
 }
 
 module.exports = controller;

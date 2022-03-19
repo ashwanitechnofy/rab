@@ -57,7 +57,7 @@ controller.subAdminStore = async (req, res) => {
             }
             const signUp = await User.register(req.body);
             if (signUp) {
-                // req.toastr.error("User added successfully.");
+                // req.toastr.success("User added successfully.");
                 return res.redirect('/admin/users/sub_admin/index');
             } else{
                 // req.toastr.error("Internal server error.");
@@ -115,9 +115,9 @@ controller.subAdminUpdate = async (req, res) => {
                   req.body.image = req.files.image[0].filename;
                 }
             }
-            const signUp = await User.register(req.body);
+            const signUp = await User.update(req.body, req.params.id);
             if (signUp) {
-                // req.toastr.error("User updated successfully.");
+                // req.toastr.success("User updated successfully.");
                 return res.redirect('/admin/users/sub_admin/index');
             } else{
                 // req.toastr.error("Internal server error.");
@@ -245,7 +245,7 @@ controller.usersStore = async (req, res) => {
         } else {
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
-            var roleId = await Role.getIdByRoleName('Admin');
+            var roleId = await Role.getIdByRoleName('User');
             req.body.role_id = roleId;
             if (req.files && Object.keys(req.files).length) {
                 if (req.files.image && Object.keys(req.files.image).length) {
@@ -254,7 +254,7 @@ controller.usersStore = async (req, res) => {
             }
             const signUp = await User.register(req.body);
             if (signUp) {
-                // req.toastr.error("User added successfully.");
+                // req.toastr.success("User added successfully.");
                 return res.redirect('/admin/users/users/index');
             } else{
                 // req.toastr.error("Internal server error.");
@@ -284,8 +284,8 @@ controller.usersView = async (req, res) => {
  * @purpose:     To view Users edit form
 */
 controller.usersEdit = async (req, res) => {
-    var adminRoleId = await Role.getIdByRoleName('Admin');
-    var user = await User.getUserOne({ id: req.params.id,  role_id: adminRoleId});
+    var userRoleId = await Role.getIdByRoleName('User');
+    var user = await User.getUserOne({ id: req.params.id,  role_id: userRoleId});
     return res.render('manageUsers/users/edit', {user: user});
 }
 
@@ -311,9 +311,9 @@ controller.usersUpdate = async (req, res) => {
                   req.body.image = req.files.image[0].filename;
                 }
             }
-            const signUp = await User.register(req.body);
+            const signUp = await User.update(req.body);
             if (signUp) {
-                // req.toastr.error("User updated successfully.");
+                // req.toastr.success("User updated successfully.");
                 return res.redirect('/admin/users/users/index');
             } else{
                 // req.toastr.error("Internal server error.");

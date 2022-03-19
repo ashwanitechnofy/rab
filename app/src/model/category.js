@@ -13,18 +13,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
+
   Category.init({
     title: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING(50),
       allowNull: false,
       unique: true
     },
-    parent: {
-      type: DataTypes.INTEGER(11),
+    status: {
+      type: DataTypes.ENUM('0', '1'),
+      defaultValue: "0",
+      allowNull: false
     }
   }, {
     sequelize,
     modelName: 'Category',
   });
+
   return Category;
+  
 };

@@ -145,20 +145,20 @@ $('#vendorForm').validate({
             }),
     messages :Object.assign(manageUserMessage, {
                 business_name : {
-                    required : "Please enter your title.",
-                    maxlength: "Title may not be greater than 50 characters.",
+                    required : "Please enter your business name.",
+                    maxlength: "Business name may not be greater than 50 characters.",
                 },
                 alternate_mobile_number : {
-                    required : "Please enter your aletrnate mobile.",
+                    required : "Please enter your business aletrnate mobile.",
                 },
                 category : {
-                    required : "Please select your category.",
+                    required : "Please select your business category.",
                 },
                 location : {
-                    required : "Please enter your location.",
+                    required : "Please enter your business location.",
                 },
                 description : {
-                    required : "Please enter your description.",
+                    required : "Please enter your business description.",
         
                 },
             }),
@@ -245,14 +245,13 @@ $('#categoryForm').validate({
     rules :{
         title : {
             required : true,
-            minlength: 3,
-            maxlength: 10,
+            maxlength: 50,
         },
     },
     messages :{
         title : {
             required : "Please enter title.",
-            maxlength: "Title may not be greater than 10 characters.",
+            maxlength: "Title may not be greater than 50 characters.",
         },
     }
 });

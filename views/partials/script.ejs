@@ -150,6 +150,7 @@
 
 <!-- Update Status -->
 <script>
+if ($(".sa-status").length > 0) {
     $('.switchery').on('click', function(e) {
         e.preventDefault();
         var id = $( ".sa-status" ).attr('data-id');
@@ -184,6 +185,7 @@
             }
         })
     })
+}
 </script>
 
 <!-- Country-State-City -->
