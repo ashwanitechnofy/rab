@@ -100,31 +100,46 @@ controller.subAdminEdit = async (req, res) => {
  * @purpose:     To Sub Admin update
 */
 controller.subAdminUpdate = async (req, res) => {
+    console.log('@@@@@@@@@@@@@@@@@@   1');
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
+            console.log('@@@@@@@@@@@@@@@@@@   2');
+
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
+            console.log('@@@@@@@@@@@@@@@@@@   3');
+
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('Admin');
             req.body.role_id = roleId;
             if (req.files && Object.keys(req.files).length) {
+                console.log('@@@@@@@@@@@@@@@@@@   4');
+
                 if (req.files.image && Object.keys(req.files.image).length) {
+                    console.log('@@@@@@@@@@@@@@@@@@   5');
+
                   req.body.image = req.files.image[0].filename;
                 }
             }
             const signUp = await User.update(req.body, req.params.id);
             if (signUp) {
-                // req.toastr.success("User updated successfully.");
+                console.log('@@@@@@@@@@@@@@@@@@   6');
+
+                // req.toastr.error("User updated successfully.");
                 return res.redirect('/admin/users/sub_admin/index');
             } else{
+                console.log('@@@@@@@@@@@@@@@@@@   7');
+
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
+        console.log('@@@@@@@@@@@@@@@@@@   8');
+
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -411,7 +426,9 @@ controller.taxiDriversEdit = async (req, res) => {
  * @purpose:     To view Hotels listning
 */
 controller.hotelsIndex = async (req, res) => {
-    return res.render('manageUsers/hotels/index');
+    var hotelsRoleId = await Role.getIdByRoleName('Hotel');
+    var hotels = await User.getUserAll({ role_id: hotelsRoleId });
+    return res.render('manageUsers/hotels/index', {hotels: hotels});
 }
 
 /**
@@ -431,7 +448,47 @@ controller.hotelsCreate = async (req, res) => {
  * @purpose:     To store Hotels
 */
 controller.hotelsStore = async (req, res) => {
-    console.log('okk');
+    console.log('Request###############   0');
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            console.log('###############    1');
+
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            console.log('###############    2');
+
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Hotel');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+            console.log('###############    3');
+
+                if (req.files.image && Object.keys(req.files.image).length) {
+                    console.log('###############    4');
+
+                  req.body.image = req.files.image[0].filename;
+                }
+            }
+            const signUp = await User.register(req.body);
+            if (signUp) {
+                console.log('###############    5');
+                // req.toastr.error("Hotel added successfully.");
+                return res.redirect('admin/users/hotels/index');
+            } else{
+                console.log('###############    6');
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        console.log('###############    7', err);
+
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
 }
 
 /**
@@ -451,7 +508,70 @@ controller.hotelsView = async (req, res) => {
  * @purpose:     To view Hotels edit form
 */
 controller.hotelsEdit = async (req, res) => {
-    return res.render('manageUsers/hotels/edit');
+    var hotelsRoleId = await Role.getIdByRoleName('Hotel');
+    var hotels = await User.getUserOne({ id: req.params.id,  role_id: hotelsRoleId});
+    return res.render('manageUsers/hotels/edit', {hotels: hotels});
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Hotels update
+*/
+controller.hotelsUpdate = async (req, res) => {
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Hotel');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+            }
+            const signUp = await User.register(req.body);
+            if (signUp) {
+                // req.toastr.error("Hotel updated successfully.");
+                return res.redirect('/admin/users/hotels/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To hotels update
+*/
+controller.hotelsUpdateStatus = async (req, res) => {
+    let id = req.params.id;
+    let status = req.body.status == '1' ? '0' : '1';
+    await User.update({status: status}, {id: id});
+    return res.redirect('back');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To delete hotels
+*/
+controller.hotelsDelete = async (req, res) => {
+    await User.deleteUser(req.params.id);
+    return res.redirect('back');
 }
 
 module.exports = controller;
