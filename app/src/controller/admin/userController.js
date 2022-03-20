@@ -1,4 +1,6 @@
 var bcrypt = require('bcrypt');
+const {sequelize,DataTypes} = require('../../index');
+const Category = require('../../model/category')(sequelize, DataTypes);
 
 const RoleService = require("../../service/role");
 const UserService = require("../../service/user");
@@ -178,7 +180,9 @@ controller.subAdminDelete = async (req, res) => {
  * @purpose:     To view Vendors listning
 */
 controller.vendorsIndex = async (req, res) => {
-    return res.render('manageUsers/vendors/index');
+    var vendorRoleId = await Role.getIdByRoleName('Vendor');
+    var vendors = await User.getUserAll({ role_id: vendorRoleId });
+    return res.render('manageUsers/vendors/index', {vendors: vendors});
 }
 
 /**
@@ -188,7 +192,12 @@ controller.vendorsIndex = async (req, res) => {
  * @purpose:     To view Vendors Create
 */
 controller.vendorsCreate = async (req, res) => {
-    return res.render('manageUsers/vendors/create');
+    await Category.findAll({where: {status: '1'}}).then(categories => {
+        return res.render('manageUsers/vendors/create', {categories: categories});
+    }).catch(err => {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    });
 }
 
 /**
@@ -198,7 +207,34 @@ controller.vendorsCreate = async (req, res) => {
  * @purpose:     To store Vendors
 */
 controller.vendorsStore = async (req, res) => {
-    console.log('okk');
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Vendor');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+            }
+            const signUp = await User.register(req.body);
+            if (signUp) {
+                // req.toastr.success("Vendor added successfully.");
+                return res.redirect('/admin/users/vendors/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
 }
 
 /**
@@ -219,6 +255,80 @@ controller.vendorsView = async (req, res) => {
 */
 controller.vendorsEdit = async (req, res) => {
     return res.render('manageUsers/vendors/edit');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Vendors update
+*/
+controller.vendorsUpdate = async (req, res) => {
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("Vendor already exist.");
+            return res.redirect('back');
+        } else {
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Vendor');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+            }
+            const signUp = await User.update(req.body);
+            if (signUp) {
+                // req.toastr.success("Vendor updated successfully.");
+                return res.redirect('/admin/users/vendors/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Vendors account approved
+*/
+controller.vendorsIsApproved = async (req, res) => {
+    let id = req.params.id;
+    let isApproved = req.body.is_approved == '1' ? '0' : '1';
+    await User.update({is_approved: isApproved}, {id: id});
+    return res.redirect('back');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To user update status
+*/
+controller.vendorsUpdateStatus = async (req, res) => {
+    let id = req.params.id;
+    let status = req.body.status == '1' ? '0' : '1';
+    await User.update({status: status}, {id: id});
+    return res.redirect('back');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To delete user
+*/
+controller.vendorsDelete = async (req, res) => {
+    await User.deleteUser(req.params.id);
+    return res.redirect('back');
 }
 
 /********** User **********/
@@ -448,27 +558,22 @@ controller.hotelsCreate = async (req, res) => {
  * @purpose:     To store Hotels
 */
 controller.hotelsStore = async (req, res) => {
-    console.log('Request###############   0');
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
             console.log('###############    1');
-
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
             console.log('###############    2');
-
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('Hotel');
             req.body.role_id = roleId;
             if (req.files && Object.keys(req.files).length) {
             console.log('###############    3');
-
                 if (req.files.image && Object.keys(req.files.image).length) {
                     console.log('###############    4');
-
                   req.body.image = req.files.image[0].filename;
                 }
             }
@@ -485,7 +590,6 @@ controller.hotelsStore = async (req, res) => {
         }
     } catch (err) {
         console.log('###############    7', err);
-
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -508,9 +612,9 @@ controller.hotelsView = async (req, res) => {
  * @purpose:     To view Hotels edit form
 */
 controller.hotelsEdit = async (req, res) => {
-    var hotelsRoleId = await Role.getIdByRoleName('Hotel');
-    var hotels = await User.getUserOne({ id: req.params.id,  role_id: hotelsRoleId});
-    return res.render('manageUsers/hotels/edit', {hotels: hotels});
+    var hotelRoleId = await Role.getIdByRoleName('Hotel');
+    var hotel = await User.getUserOne({ id: req.params.id,  role_id: hotelRoleId});
+    return res.render('manageUsers/hotels/edit', {hotel: hotel});
 }
 
 /**
@@ -554,7 +658,7 @@ controller.hotelsUpdate = async (req, res) => {
  * @params:      
  * @createdDate: MARCH-2022 (mm-yyyy)
  * @developer:   TCHNOFY INDIA
- * @purpose:     To hotels update
+ * @purpose:     To hotels update status
 */
 controller.hotelsUpdateStatus = async (req, res) => {
     let id = req.params.id;

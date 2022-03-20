@@ -1,20 +1,20 @@
 <div class="form-group row">
     <div class="col-6">
         <label>First Name</label>
-        <input type="text" name="first_name" value="<%= typeof hotels != 'undefined' ? hotels.first_name : '' %>" class="form-control" placeholder="First Name" autocomplete="off">
+        <input type="text" name="first_name" value="<%= typeof hotel != 'undefined' ? hotel.first_name : '' %>" class="form-control" placeholder="First Name" autocomplete="off">
     </div>
     <div class="col-6">
         <label>Last Name</label>
-        <input type="text" name="last_name" value="<%= typeof hotels != 'undefined' ? hotels.last_name : '' %>" class="form-control" placeholder="Last Name" autocomplete="off">
+        <input type="text" name="last_name" value="<%= typeof hotel != 'undefined' ? hotel.last_name : '' %>" class="form-control" placeholder="Last Name" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
     <div class="col-4">
         <label>Email</label>
-        <input type="email" name="email" value="<%= typeof hotels != 'undefined' ? hotels.email : '' %>" class="form-control" parsley-trigger="change" placeholder="Email" autocomplete="off">
+        <input type="email" name="email" value="<%= typeof hotel != 'undefined' ? hotel.email : '' %>" class="form-control" parsley-trigger="change" placeholder="Email" autocomplete="off">
     </div>
 
-    <%if (typeof hotels == 'undefined') { %>
+    <%if (typeof hotel == 'undefined') { %>
 
     <div class="col-4">
         <label>Password</label>
@@ -31,20 +31,20 @@
 <div class="form-group row">
     <div class="col-4">
         <label>Mobile</label>
-        <input type="text" name="mobile_no" value="<%= typeof hotels != 'undefined' ? hotels.mobile_no : '' %>" class="form-control" placeholder="Mobile" autocomplete="off">
+        <input type="text" name="mobile_no" value="<%= typeof hotel != 'undefined' ? hotel.mobile_no : '' %>" class="form-control" placeholder="Mobile" autocomplete="off">
     </div>
     <div class="col-4">
         <label>Gender</label>
         <select name="gender" class="form-control" autocomplete="off">
             <option value="">Select</option>
-            <option value="Male" <%= typeof hotels != 'undefined' && hotels.gender == 'Male' ? 'selected' : '' %>>Male</option>
-            <option value="Female" <%= typeof hotels != 'undefined' && hotels.gender == 'Female' ? 'selected' : '' %>>Female</option>
-            <option value="Other" <%= typeof hotels != 'undefined' && hotels.gender == 'Female' ? 'Other' : '' %>>Other</option>
+            <option value="Male" <%= typeof hotel != 'undefined' && hotel.gender == 'Male' ? 'selected' : '' %>>Male</option>
+            <option value="Female" <%= typeof hotel != 'undefined' && hotel.gender == 'Female' ? 'selected' : '' %>>Female</option>
+            <option value="Other" <%= typeof hotel != 'undefined' && hotel.gender == 'Female' ? 'Other' : '' %>>Other</option>
         </select>
     </div>
     <div class="col-4">
         <label>Date of Birth</label>
-        <input type="text" name="dob" value="<%= typeof hotels != 'undefined' ? hotels.dob : '' %>" class="form-control" placeholder="DD-MM-YYYY" id="datepicker-autoclose" autocomplete="off">
+        <input type="text" name="dob" value="<%= typeof hotel != 'undefined' ? hotel.dob : '' %>" class="form-control" placeholder="DD-MM-YYYY" id="datepicker-autoclose" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
@@ -70,17 +70,17 @@
 <div class="form-group row">
     <div class="col-9">
         <label>Address</label>
-        <input type="text" name="address" value="<%= typeof hotels != 'undefined' ? hotels.address : '' %>" class="form-control" placeholder="Address" autocomplete="off">
+        <input type="text" name="address" value="<%= typeof hotel != 'undefined' ? hotel.address : '' %>" class="form-control" placeholder="Address" autocomplete="off">
     </div>
     <div class="col-3">
         <label>Pin Code</label>
-        <input type="text" name="pin_code" value="<%= typeof hotels != 'undefined' ? hotels.pin_code : '' %>" class="form-control"  placeholder="Pin Code" autocomplete="off">
+        <input type="text" name="pin_code" value="<%= typeof hotel != 'undefined' ? hotel.pin_code : '' %>" class="form-control"  placeholder="Pin Code" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
     <div class="col-12">
         <label>Landmark</label>
-        <input type="text" name="landmark" value="<%= typeof hotels != 'undefined' ? hotels.landmark : '' %>" class="form-control"  placeholder="Landmark" autocomplete="off">
+        <input type="text" name="landmark" value="<%= typeof hotel != 'undefined' ? hotel.landmark : '' %>" class="form-control"  placeholder="Landmark" autocomplete="off">
     </div>
 </div>
 <div class="form-group row dragDrop">
@@ -92,7 +92,7 @@
                 <i class="fa fa-cloud-upload"></i>
                 <p>Choose an image file or drag it here.</p>
                 </div>
-                <input type="file" name="image" value="<%= typeof hotels != 'undefined' ? hotels.image : '' %>" class="dropzone" autocomplete="off">
+                <input type="file" name="image" value="<%= typeof hotel != 'undefined' ? hotel.image : '' %>" class="dropzone" autocomplete="off">
             </div>
             <div class="preview-zone hidden col-4">
                 <div class="box box-solid">
@@ -103,9 +103,9 @@
                     </div>
                     <div class="box-body">
 
-                        <%if (typeof hotels != 'undefined') { %>
+                        <%if (typeof hotel != 'undefined') { %>
 
-                        <img width="200" src="<%= hotels.image %>">
+                        <img width="200" src="<%= hotel.image %>">
 
                         <% } %>
 
@@ -118,7 +118,7 @@
 <div class="form-group row">
     <div class="col-12 mt-2">
         <label>Status</label>
-        <input type="checkbox" name="status" value="1" checked data-plugin="switchery" data-color="#1bb99a"/>
+        <input type="checkbox" name="status" value="1" data-plugin="switchery" data-color="#1bb99a" <%= typeof hotel != 'undefined' && hotel.status == '1' ? 'checked' : typeof hotel == 'undefined' ? 'checked' : '' %>>
     </div>
 </div>
 <button type="submit" class="btn btn-custom waves-effect waves-light">Submit</button>
