@@ -13,8 +13,10 @@ const controller = {};
 */
 controller.categoriesIndex = async (req, res) => {
     Category.findAll().then(data => {
+        console.log("datadatadatadatadta", data);
         return res.render('manageCategories/categories/index', {data: data});
     }).catch(err => {
+        console.log("erorororoor", err);
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     });
