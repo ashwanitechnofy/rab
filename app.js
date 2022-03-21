@@ -12,6 +12,9 @@ var app = express();
 var session = require('express-session');
 var layout = require('express-layout');
 
+var moment = require('moment');
+app.locals.moment = require('moment');
+
 connectToDb();
 
 app.use(layout());

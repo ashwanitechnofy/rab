@@ -151,10 +151,10 @@
 <!-- Update Status -->
 <script>
 if ($(".sa-status").length > 0) {
-    $('.switchery').on('click', function(e) {
+    $('.sa-status').on('change', function(e) {
         e.preventDefault();
-        var id = $( ".sa-status" ).attr('data-id');
-        var value = $( ".sa-status" ).val();
+        var id = $(this).attr('data-id');
+        var value = $(this).val();
         swal({
             title: 'Are you sure?',
             text: "You won't be able to update this!",
@@ -417,7 +417,7 @@ if ($("#countryId").length > 0) {
 
 <script>
 $('#datepicker-autoclose').datepicker({
-    format: 'yyyy-mm-dd',
+    format: 'dd-mm-yyyy',
     todayHighlight:'TRUE',
     autoclose: true,
 })
