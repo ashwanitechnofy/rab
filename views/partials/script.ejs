@@ -264,6 +264,9 @@ if ($("#countryId").length > 0) {
                         option.attr('selected', 'selected');
                         jQuery('.cities').append(option);
                     }
+                    if(jQuery("#cityId").data('value')){
+                        jQuery('#cityId').val(jQuery("#cityId").data('value'));
+                    }
                     jQuery(".cities").prop("disabled",false);
                 } else{
                     alert(data.msg);
@@ -296,6 +299,9 @@ if ($("#countryId").length > 0) {
                         option.attr('stateid', key);
                         jQuery('.states').append(option);
                     });
+                    if(jQuery("#stateId").data('value')){
+                        jQuery('#stateId').val(jQuery("#stateId").data('value')).trigger('change');
+                    }
                     jQuery(".states").prop("disabled",false);
                 } else{
                     alert(data.msg);
@@ -368,6 +374,9 @@ if ($("#countryId").length > 0) {
                     }
                     if(presel){
                         jQuery('.countries').trigger('change');
+                    }
+                    if(jQuery("#countryId").data('value')){
+                        jQuery('#countryId').val(jQuery("#countryId").data('value')).trigger('change');
                     }
                     jQuery(".countries").prop("disabled",false);
                 } else{
