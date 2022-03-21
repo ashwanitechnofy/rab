@@ -561,35 +561,32 @@ controller.hotelsStore = async (req, res) => {
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
-            console.log('###############    1');
             // req.toastr.error("User already exist.");
+            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  1');
             return res.redirect('back');
-        } else {
-            console.log('###############    2');
+        } else{
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('Hotel');
             req.body.role_id = roleId;
             if (req.files && Object.keys(req.files).length) {
-            console.log('###############    3');
                 if (req.files.image && Object.keys(req.files.image).length) {
-                    console.log('###############    4');
                   req.body.image = req.files.image[0].filename;
                 }
             }
             const signUp = await User.register(req.body);
             if (signUp) {
-                console.log('###############    5');
-                // req.toastr.error("Hotel added successfully.");
-                return res.redirect('admin/users/hotels/index');
+                // req.toastr.success("User added successfully.");
+                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  2');
+                return res.redirect('/admin/users/hotels/index');
             } else{
-                console.log('###############    6');
                 // req.toastr.error("Internal server error.");
+                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  3');
                 return res.redirect('back');
             }
         }
     } catch (err) {
-        console.log('###############    7', err);
+        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  4');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }

@@ -62,14 +62,14 @@ module.exports = (app) => {
 	// app.post('/admin/users/taxi_drivers/update/:id', taxiDriversUpdate);
 
 	/* Hotels */
-	app.get('/admin/users/hotels/index', hotelsIndex);
-	app.get('/admin/users/hotels/create', hotelsCreate);
-	app.post('/admin/users/hotels/store', hotelsStore);
-	app.get('/admin/users/hotels/view', hotelsView);
-	app.get('/admin/users/hotels/edit/:id', hotelsEdit);
-	app.post('/admin/users/hotels/update/:id', hotelsUpdate);
-	app.post('/admin/users/hotels/update_status/:id', hotelsUpdateStatus);
-	app.post('/admin/users/hotels/delete/:id', hotelsDelete);
+	app.get('/admin/users/hotels/index', adminAuth, hotelsIndex);
+	app.get('/admin/users/hotels/create', adminAuth, hotelsCreate);
+	app.post('/admin/users/hotels/store', adminAuth, Upload, hotelsStore);
+	app.get('/admin/users/hotels/view', adminAuth, hotelsView);
+	app.get('/admin/users/hotels/edit/:id', adminAuth, hotelsEdit);
+	app.post('/admin/users/hotels/update/:id', adminAuth, Upload, hotelsUpdate);
+	app.post('/admin/users/hotels/update_status/:id', adminAuth, hotelsUpdateStatus);
+	app.post('/admin/users/hotels/delete/:id', adminAuth, hotelsDelete);
 
 	/* Categories */
 	app.get('/admin/categories/index', adminAuth, categoriesIndex);
