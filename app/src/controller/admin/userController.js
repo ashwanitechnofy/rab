@@ -558,6 +558,7 @@ controller.hotelsCreate = async (req, res) => {
  * @purpose:     To store Hotels
 */
 controller.hotelsStore = async (req, res) => {
+    console.log('###############    request');
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
