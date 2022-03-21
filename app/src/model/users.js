@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       get() {
         if (this.getDataValue('image')) {
-          return config.BASE_URL + '/image/profile/' + this.getDataValue('image');
+          return config.BASE_URL + 'assets/upload/profile/' + this.getDataValue('image');
         }
       },
     },

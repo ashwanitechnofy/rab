@@ -42,31 +42,39 @@ controller.subAdminCreate = async (req, res) => {
  * @purpose:     To store Sub Admin
 */
 controller.subAdminStore = async (req, res) => {
+    console.log("****************** 1");
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
+            console.log("****************** 2");
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
+            console.log("****************** 3");
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('Admin');
             req.body.role_id = roleId;
             if (req.files && Object.keys(req.files).length) {
+                console.log("****************** 4");
                 if (req.files.image && Object.keys(req.files.image).length) {
+                    console.log("****************** image");
                   req.body.image = req.files.image[0].filename;
                 }
             }
             const signUp = await User.register(req.body);
             if (signUp) {
+                console.log("****************** 5");
                 // req.toastr.success("User added successfully.");
                 return res.redirect('/admin/users/sub_admin/index');
             } else{
+                console.log("****************** 6");
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
+        console.log("****************** 6");
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -612,6 +620,7 @@ controller.hotelsView = async (req, res) => {
 controller.hotelsEdit = async (req, res) => {
     var hotelRoleId = await Role.getIdByRoleName('Hotel');
     var hotel = await User.getUserOne({ id: req.params.id,  role_id: hotelRoleId});
+    console.log('@@@@@@@@@@@@@@@@@@@@@@', hotel);
     return res.render('manageUsers/hotels/edit', {hotel: hotel});
 }
 
