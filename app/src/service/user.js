@@ -1,21 +1,47 @@
 const {sequelize,DataTypes} = require('../index');
 const Users = require('../model/users')(sequelize, DataTypes);
+const vendorBusinessDetails = require('../model/vendor_business_details')(sequelize, DataTypes);
+
+Users.hasOne(vendorBusinessDetails, {
+    foreignKey: 'user_id'
+});
 
 class UserService {
 
+    /**
+     * @params:      
+     * @purpose: To add user
+    */
     register(body) {
         return new Promise((resolve, reject) => {
             return Users.create(body)
                 .then(u => {
                     return resolve(u);
                 }).catch(err => {
-                    console.log('err>>>>>>>>>>', err);
                     return reject(err);
                 });
-
         });
     }
 
+    /**
+     * @params:      
+     * @purpose: To add vendor business detail
+    */
+    registerVendorBusinessDetail(body) {
+        return new Promise((resolve, reject) => {
+            return vendorBusinessDetails.create(body)
+                .then(u => {
+                    return resolve(u);
+                }).catch(err => {
+                    return reject(err);
+                });
+        });
+    }
+    
+    /**
+     * @params:      
+     * @purpose: To get admin email id
+    */
     getAdminEmail(param) {
         return new Promise((resolve, reject) => {
             Users.findOne({
@@ -24,7 +50,6 @@ class UserService {
             }).then(u => {
                 return resolve(u);
             }).catch(err => {
-                console.log('err>>>>>>', err);
                 return reject(err);
             });
         });
@@ -32,7 +57,7 @@ class UserService {
 
     /**
      * @params:      
-     * @purpose: To get single user
+     * @purpose: To get user
     */
     getUserOne(param) {
         return new Promise((resolve, reject) => {
@@ -41,7 +66,23 @@ class UserService {
             }).then(u => {
                 return resolve(u);
             }).catch(err => {
-                console.log('err>>>>>>', err);
+                return reject(err);
+            });
+        });
+    }
+
+    /**
+     * @params:      
+     * @purpose: To get vendor
+    */
+     getVendorOne(param) {
+        return new Promise((resolve, reject) => {
+            Users.findOne({
+                where: param,
+                include:[{model:vendorBusinessDetails}]
+            }).then(u => {
+                return resolve(u);
+            }).catch(err => {
                 return reject(err);
             });
         });
@@ -58,7 +99,6 @@ class UserService {
             }).then(u => {
                 return resolve(u);
             }).catch(err => {
-                console.log('err>>>>>>', err);
                 return reject(err);
             });
         });
@@ -72,12 +112,15 @@ class UserService {
             }).then(u => {
                 return resolve(u);
             }).catch(err => {
-                console.log('err>>>>>>', err);
                 return reject(err);
             });
         });
     }
 
+    /**
+     * @params:      
+     * @purpose: To check user exist
+    */
     checkUserExist(param) {
         return new Promise((resolve, reject) => {
             Users.findOne({
@@ -93,7 +136,7 @@ class UserService {
 
     /**
      * @params:      
-     * @purpose: To update single user
+     * @purpose: To update user
     */
     update(body, condition) {
         return Users.update(body, {
@@ -106,7 +149,7 @@ class UserService {
 
     /**
      * @params:      
-     * @purpose: To delete single user
+     * @purpose: To delete user
     */
     deleteUser(id) {
         return new Promise((resolve, reject) => {

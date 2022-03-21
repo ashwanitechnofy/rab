@@ -16,28 +16,28 @@ class VehicleCategoryService {
 
     getCompanyModel(body) {
         return new Promise((resolve, reject) => {
-                return Vehicle_category.findAll({ include:[{model:Company, foreignKey: 'category_id',include:[{model:Model,foreignKey: 'company_id'}]}] })
-                .then(u => {
-                    return resolve(u);
-                }).catch(err => {
-                    console.log('err>>>>>>>>>>', err);
-                    return reject(err);
-                });
-
+            return Vehicle_category.findAll({ include:[{model:Company, foreignKey: 'category_id',include:[{model:Model,foreignKey: 'company_id'}]}] })
+            .then(u => {
+                return resolve(u);
+            }).catch(err => {
+                console.log('err>>>>>>>>>>', err);
+                return reject(err);
+            });
         });
     }
 
     firstCategoryId() {
         return new Promise((resolve, reject) => {
-                return Vehicle_category.findOne({attributes:['id']})
-                .then(u => {
-                    return resolve(u.id);
-                }).catch(err => {
-                    console.log('err>>>>>>>>>>', err);
-                    return reject(err);
-                });
+            return Vehicle_category.findOne({attributes:['id']})
+            .then(u => {
+                return resolve(u.id);
+            }).catch(err => {
+                console.log('err>>>>>>>>>>', err);
+                return reject(err);
+            });
         });
     }
 
 }
+
 module.exports = VehicleCategoryService;

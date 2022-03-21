@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
     }
   }
   Role.init({
@@ -23,5 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'role',
   });
+
   return Role;
+  
 };

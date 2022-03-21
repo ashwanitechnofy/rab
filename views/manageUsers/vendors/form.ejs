@@ -1,18 +1,21 @@
 <div class="form-group row">
     <div class="col-6">
         <label>First Name</label>
-        <input type="text" name="first_name" class="form-control" placeholder="First Name" autocomplete="off">
+        <input type="text" name="first_name" value="<%= typeof vendor != 'undefined' ? vendor.first_name : '' %>" class="form-control" placeholder="First Name" autocomplete="off">
     </div>
     <div class="col-6">
         <label>Last Name</label>
-        <input type="text" name="last_name" class="form-control" placeholder="Last Name" autocomplete="off">
+        <input type="text" name="last_name" value="<%= typeof vendor != 'undefined' ? vendor.last_name : '' %>" class="form-control" placeholder="Last Name" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
     <div class="col-4">
         <label>Email</label>
-        <input type="email" name="email" class="form-control" parsley-trigger="change" placeholder="Email" autocomplete="off">
+        <input type="email" name="email" value="<%= typeof vendor != 'undefined' ? vendor.email : '' %>" class="form-control" parsley-trigger="change" placeholder="Email" autocomplete="off">
     </div>
+
+    <%if (typeof vendor == 'undefined') { %>
+
     <div class="col-4">
         <label>Password</label>
         <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
@@ -21,42 +24,45 @@
         <label>Confirm Password</label>
         <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" autocomplete="off">
     </div>
+
+    <% } %>
+    
 </div>
 <div class="form-group row">
     <div class="col-4">
         <label>Mobile</label>
-        <input type="text" name="mobile_no" class="form-control" placeholder="Mobile" autocomplete="off">
+        <input type="text" name="mobile_no" value="<%= typeof vendor != 'undefined' ? vendor.mobile_no : '' %>" class="form-control" placeholder="Mobile" autocomplete="off">
     </div>
     <div class="col-4">
         <label>Gender</label>
         <select name="gender" class="form-control" autocomplete="off">
             <option value="">Select</option>
-            <option value="Male" <%= typeof user != 'undefined' && user.gender == 'Male' ? 'selected' : '' %>>Male</option>
-            <option value="Female" <%= typeof user != 'undefined' && user.gender == 'Female' ? 'selected' : '' %>>Female</option>
-            <option value="Other" <%= typeof user != 'undefined' && user.gender == 'Female' ? 'Other' : '' %>>Other</option>
+            <option value="Male" <%= typeof vendor != 'undefined' && vendor.gender == 'Male' ? 'selected' : '' %>>Male</option>
+            <option value="Female" <%= typeof vendor != 'undefined' && vendor.gender == 'Female' ? 'selected' : '' %>>Female</option>
+            <option value="Other" <%= typeof vendor != 'undefined' && vendor.gender == 'Female' ? 'Other' : '' %>>Other</option>
         </select>
     </div>
     <div class="col-4">
         <label>Date of Birth</label>
-        <input type="text" name="dob" class="form-control"  placeholder="Date of Birth" autocomplete="off">
+        <input type="text" name="dob" value="<%= typeof vendor != 'undefined' ? vendor.dob : '' %>" class="form-control" placeholder="DD-MM-YYYY" id="datepicker-autoclose" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
     <div class="col-4">
         <label>Country</label>
-        <select name="country" class="countries form-control" id="countryId" autocomplete="off">
+        <select name="country" data-value="<%= typeof vendor != 'undefined' ? vendor.country : '' %>" class="countries form-control" id="countryId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>
     <div class="col-4">
         <label>State</label>
-        <select name="state" class="states form-control" id="stateId" autocomplete="off">
+        <select name="state" data-value="<%= typeof vendor != 'undefined' ? vendor.state : '' %>" class="states form-control" id="stateId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>
     <div class="col-4">
         <label>City</label>
-        <select name="city" class="cities form-control" id="cityId" autocomplete="off">
+        <select name="city" data-value="<%= typeof vendor != 'undefined' ? vendor.city : '' %>" class="cities form-control" id="cityId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>
@@ -64,17 +70,17 @@
 <div class="form-group row">
     <div class="col-9">
         <label>Address</label>
-        <input type="text" name="address" class="form-control" placeholder="Address" autocomplete="off">
+        <input type="text" name="address" value="<%= typeof vendor != 'undefined' ? vendor.address : '' %>" class="form-control" placeholder="Address" autocomplete="off">
     </div>
     <div class="col-3">
         <label>Pin Code</label>
-        <input type="text" name="pin_code" class="form-control"  placeholder="Pin Code" autocomplete="off">
+        <input type="text" name="pin_code" value="<%= typeof vendor != 'undefined' ? vendor.pin_code : '' %>" class="form-control"  placeholder="Pin Code" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
     <div class="col-12">
         <label>Landmark</label>
-        <input type="text" name="landmark" class="form-control"  placeholder="Landmark" autocomplete="off">
+        <input type="text" name="landmark" value="<%= typeof vendor != 'undefined' ? vendor.landmark : '' %>" class="form-control"  placeholder="Landmark" autocomplete="off">
     </div>
 </div>
 <div class="form-group row dragDrop">
@@ -86,7 +92,7 @@
                 <i class="fa fa-cloud-upload"></i>
                 <p>Choose an image file or drag it here.</p>
                 </div>
-                <input type="file" name="image" class="dropzone">
+                <input type="file" name="image" class="dropzone" autocomplete="off">
             </div>
             <div class="preview-zone hidden col-4">
                 <div class="box box-solid">
@@ -95,7 +101,15 @@
                             <i class="fa fa-times"></i> Remove
                         </button>
                     </div>
-                <div class="box-body"></div>
+                    <div class="box-body">
+
+                        <%if (typeof vendor != 'undefined') { %>
+
+                        <img width="200" src="<%= vendor.image %>">
+
+                        <% } %>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -104,18 +118,18 @@
 <div class="form-group row">
     <div class="col-12 mt-2">
         <label>Status</label>
-        <input type="checkbox" name="status" data-plugin="switchery" data-color="#1bb99a" <%= typeof vendor != 'undefined' && vendor.status == '1' ? 'checked' : typeof user == 'undefined' ? 'checked' : '' %>>
+        <input type="checkbox" name="status" value="1" data-plugin="switchery" data-color="#1bb99a" <%= typeof vendor != 'undefined' && vendor.status == '1' ? 'checked' : typeof vendor == 'undefined' ? 'checked' : '' %>>
     </div>
 </div>
 <h4 class="m-t-0 m-b-30 header-title">Add Vendor Business Details</h4>
 <div class="form-group row">
     <div class="col-6">
         <label>Business Name</label>
-        <input type="text" name="business_name" class="form-control" placeholder="Business Name" autocomplete="off">
+        <input type="text" name="business_name" value="<%= typeof vendor != 'undefined' ? vendor.vendor_business_detail.business_name : '' %>" class="form-control" placeholder="Business Name" autocomplete="off">
     </div>
     <div class="col-6">
         <label>Aletrnate Mobile</label>
-        <input type="text" name="alternate_mobile_number" class="form-control" placeholder="Aletrnate Mobile" autocomplete="off">
+        <input type="text" name="aletrnate_mobile_no" value="<%= typeof vendor != 'undefined' ? vendor.vendor_business_detail.aletrnate_mobile_no : '' %>" class="form-control" placeholder="Aletrnate Mobile" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
@@ -126,7 +140,7 @@
 
             <% categories.forEach((value, key) => { %>
 
-                <option value="<%= value.id %>"><%= value.title %></option>
+                <option value="<%= value.id %>" <%= typeof vendor != 'undefined' && vendor.vendor_business_detail.category_id == value.id ? 'selected' : '' %>><%= value.title %></option>
 
             <% }); %>
 
@@ -134,29 +148,43 @@
     </div>
     <div class="col-6">
         <label>Location</label>
-        <input type="text" name="location" class="form-control" placeholder="Location" autocomplete="off">
+        <input type="text" name="location" value="<%= typeof vendor != 'undefined' ? vendor.vendor_business_detail.location : '' %>" class="form-control" placeholder="Location" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
     <div class="col-12">
         <label>Description</label>
-        <input type="text" name="description" class="form-control" placeholder="Enter Somthing About Your Business" autocomplete="off">
+        <input type="text" name="description" value="<%= typeof vendor != 'undefined' ? vendor.vendor_business_detail.description : '' %>" class="form-control" placeholder="Enter Somthing About Your Business" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
     <div class="col-12">
         <label>Do you have visiting card ?</label>
-        <input type="checkbox" checked data-plugin="switchery" data-color="#1bb99a">
+        <input type="checkbox" name="is_visiting_card" value="1" data-plugin="switchery" data-color="#1bb99a" <%= typeof vendor != 'undefined' && vendor.vendor_business_detail.is_visiting_card == '1' ? 'checked' : typeof vendor == 'undefined' ? 'checked' : '' %>>
     </div>
 </div>
 <div class="form-group row">
     <div class="col-2">
         <label>Upload Visiting Card</label>
-        <input type="file" class="filestyle" data-input="false" data-buttonname="btn-secondary">
+        <input type="file" name="visiting_card_image" class="filestyle" data-input="false" data-buttonname="btn-secondary">
+        
+        <%if (typeof vendor != 'undefined' && typeof vendor.vendor_business_detail.visiting_card_image != 'undefined') { %>
+
+            <img width="200" height="120" src="<%= vendor.vendor_business_detail.visiting_card_image %>">
+
+        <% } %>
+
     </div>    
     <div class="col-3">
         <label>Upload Award & Certifications</label>
-        <input type="file" class="filestyle" data-input="false" data-buttonname="btn-secondary">
+        <input type="file" name="award_certification_image" class="filestyle" data-input="false" data-buttonname="btn-secondary">
+
+        <%if (typeof vendor != 'undefined' && typeof vendor.vendor_business_detail.award_certification_image != 'undefined') { %>
+
+            <img width="200" height="120" src="<%= vendor.vendor_business_detail.award_certification_image %>">
+
+        <% } %>
+
     </div>    
 </div>
 <button type="submit" class="btn btn-custom waves-effect waves-light">Submit</button>

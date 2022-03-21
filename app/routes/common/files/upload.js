@@ -3,16 +3,16 @@ let files = {};
 var storageK = multer.diskStorage({
 	destination: function (req, file, callback) {
 		if(file.fieldname == 'identity')
-		callback(null, 'public/assets/upload/kyc');
+		callback(null, 'public/assets/uploadImages/kyc');
 
 		if(file.fieldname == 'image')
-		callback(null, 'public/assets/upload/profile');
+		callback(null, 'public/assets/uploadImages/profile');
 
-		if(file.fieldname == 'visiting_image')
-		callback(null, 'public/assets/upload/cards');
+		if(file.fieldname == 'visiting_card_image')
+		callback(null, 'public/assets/uploadImages/visitingCard');
 
-		if(file.fieldname == 'certificate')
-		callback(null, 'public/assets/upload/certificates');
+		if(file.fieldname == 'award_certification_image')
+		callback(null, 'public/assets/uploadImages/awardCertification');
 	},
 	filename: function (req, file, callback) {
 		// callback(null, Date.now() + "_" + file.originalname);

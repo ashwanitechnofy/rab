@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     mobile_no: {
       type: DataTypes.INTEGER(20),
+      allowNull: false
     },
     gender: {
       type: DataTypes.STRING(10),
@@ -80,10 +81,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     image: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING(191),
       get() {
         if (this.getDataValue('image')) {
-          return config.BASE_URL + 'assets/upload/profile/' + this.getDataValue('image');
+          return config.BASE_URL + 'public/assets/upload/profile' + this.getDataValue('image');
         }
       },
     },

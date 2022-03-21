@@ -42,7 +42,6 @@ controller.subAdminCreate = async (req, res) => {
  * @purpose:     To store Sub Admin
 */
 controller.subAdminStore = async (req, res) => {
-    console.log("****************** 1");
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
@@ -100,6 +99,7 @@ controller.subAdminView = async (req, res) => {
 controller.subAdminEdit = async (req, res) => {
     var adminRoleId = await Role.getIdByRoleName('Admin');
     var subAdmin = await User.getUserOne({ id: req.params.id,  role_id: adminRoleId});
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1', subAdmin);
     return res.render('manageUsers/subAdmin/edit', {subAdmin: subAdmin});
 }
 
@@ -110,7 +110,6 @@ controller.subAdminEdit = async (req, res) => {
  * @purpose:     To Sub Admin update
 */
 controller.subAdminUpdate = async (req, res) => {
-    console.log('@@@@@@@@@@@@@@@@@@   1');
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
@@ -215,23 +214,37 @@ controller.vendorsCreate = async (req, res) => {
  * @purpose:     To store Vendors
 */
 controller.vendorsStore = async (req, res) => {
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@', req.body);
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
+            console.log('sssssssssssssssssssssssssssssssssss');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
+            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('Vendor');
             req.body.role_id = roleId;
+            console.log('###################################');
             if (req.files && Object.keys(req.files).length) {
+                console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
                 if (req.files.image && Object.keys(req.files.image).length) {
                   req.body.image = req.files.image[0].filename;
                 }
+                if (req.files.visiting_card_image && Object.keys(req.files.visiting_card_image).length) {
+                    req.body.visiting_card_image = req.files.visiting_card_image[0].filename;
+                }
+                if (req.files.award_certification_image && Object.keys(req.files.award_certification_image).length) {
+                    req.body.award_certification_image = req.files.award_certification_image[0].filename;
+                }
             }
+            console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', req.body);
             const signUp = await User.register(req.body);
             if (signUp) {
+                // req.body.user_id = signup.id;
+                // await User.registerVendorBusinessDetail(req.body);
                 // req.toastr.success("Vendor added successfully.");
                 return res.redirect('/admin/users/vendors/index');
             } else{
@@ -240,6 +253,7 @@ controller.vendorsStore = async (req, res) => {
             }
         }
     } catch (err) {
+        console.log('cccccccccccccccccccccccccccccccc', req.body);
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -262,7 +276,15 @@ controller.vendorsView = async (req, res) => {
  * @purpose:     To view Vendors edit form
 */
 controller.vendorsEdit = async (req, res) => {
-    return res.render('manageUsers/vendors/edit');
+    try {
+        var vendorRoleId = await Role.getIdByRoleName('Vendor');
+        var vendor = await User.getVendorOne({ id: req.params.id,  role_id: vendorRoleId});
+        var categories = await Category.findAll({where: {status: '1'}});
+        return res.render('manageUsers/vendors/edit', {categories: categories, vendor: vendor});
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
 }
 
 /**

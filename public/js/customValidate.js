@@ -133,7 +133,7 @@ $('#vendorForm').validate({
                 alternate_mobile_number : {
                     required : true,
                 },
-                category : {
+                category_id : {
                     required : true,
                 },
                 location : {
@@ -151,7 +151,7 @@ $('#vendorForm').validate({
                 alternate_mobile_number : {
                     required : "Please enter your business aletrnate mobile.",
                 },
-                category : {
+                category_id : {
                     required : "Please select your business category.",
                 },
                 location : {
