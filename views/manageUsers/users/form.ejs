@@ -44,7 +44,7 @@
     </div>
     <div class="col-4">
         <label>Date of Birth</label>
-        <input type="text" name="dob" value="<%= typeof user != 'undefined' ? user.dob : '' %>" class="form-control" placeholder="DD-MM-YYYY" id="datepicker-autoclose" autocomplete="off">
+        <input type="text" name="dob" value="<%= typeof user != 'undefined' ? moment(user.dob).format('DD-MM-YYYY')  : '' %>" class="form-control" placeholder="DD-MM-YYYY" id="datepicker-autoclose" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">

@@ -42,14 +42,14 @@ controller.categoriesStore = async (req, res) => {
     try {
         const category = await Category.create(req.body);
         if (category) {
-            // req.toastr.success("Category added successfully.");
+            req.toastr.success("Category added successfully.");
             return res.redirect('/admin/categories/index');
         } else{
-            // req.toastr.error("Internal server error.");
+            req.toastr.error("Internal server error.");
             return res.redirect('back');
         }
     } catch (err) {
-        // req.toastr.error("Somthing went wrong.");
+        req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
 }
