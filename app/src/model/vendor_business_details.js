@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(191),
       get() {
         if (this.getDataValue('visiting_card_image')) {
-          return config.BASE_URL + 'public/assets/upload/visitingCard' + this.getDataValue('visiting_card_image');
+          return config.BASE_URL + 'uploadImages/visitingCard/' + this.getDataValue('visiting_card_image');
         }
       },
     },
@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(191),
       get() {
         if (this.getDataValue('award_certification_image')) {
-          return config.BASE_URL + 'public/assets/upload/awardCertification' + this.getDataValue('award_certification_image');
+          return config.BASE_URL + 'uploadImages/awardCertification/' + this.getDataValue('award_certification_image');
         }
       },
     },

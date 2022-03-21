@@ -1,10 +1,8 @@
 var { reset, submit_reset, thankyou } = require('../src/controller/web');
 var { loginForm, login, logout } = require('../src/controller/admin/authController');
 var { dashboard } = require('../src/controller/admin/dashboardController');
-var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, subAdminUpdateStatus, subAdminDelete, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, vendorsIsApproved, vendorsUpdateStatus, vendorsDelete, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, usersUpdateStatus, usersDelete, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate } = require('../src/controller/admin/userController');
+var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, subAdminUpdateStatus, subAdminDelete, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, vendorsIsApproved, vendorsUpdateStatus, vendorsDelete, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, usersUpdateStatus, usersDelete, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, taxiDriversIsApproved, taxiDriversUpdateStatus, taxiDriversDelete, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate, hotelsUpdateStatus, hotelsDelete } = require('../src/controller/admin/userController');
 var { categoriesIndex, categoriesCreate, categoriesStore, categoriesView, categoriesEdit, categoriesUpdate, categoriesUpdateStatus, activitiesIndex, activitiesCreate } = require('../src/controller/admin/categoriesController');
-var { subAdminIndex, subAdminCreate, subAdminStore, subAdminView, subAdminEdit, subAdminUpdate, subAdminUpdateStatus, subAdminDelete, vendorsIndex, vendorsCreate, vendorsStore, vendorsView, vendorsEdit, vendorsUpdate, usersIndex, usersCreate, usersStore, usersView, usersEdit, usersUpdate, usersUpdateStatus, usersDelete, taxiDriversIndex, taxiDriversCreate, taxiDriversStore, taxiDriversView, taxiDriversEdit, taxiDriversUpdate, hotelsIndex, hotelsCreate, hotelsStore, hotelsView, hotelsEdit, hotelsUpdate, hotelsUpdateStatus, hotelsDelete } = require('../src/controller/admin/userController');
-var { categoriesIndex, categoriesCreate, categoriesStore, categoriesView, categoriesEdit, categoriesUpdate, activitiesIndex, activitiesCreate } = require('../src/controller/admin/categoriesController');
 
 var adminAuth = require('./middleware/adminAuth');
 
@@ -34,9 +32,9 @@ module.exports = (app) => {
 
 	/* Vendors */
 	app.get('/admin/users/vendors/index', adminAuth, vendorsIndex);
-	app.get('/admin/users/vendors/create', adminAuth,  vendorsCreate);
-	app.post('/admin/users/vendors/store', adminAuth, Upload,  vendorsStore);
-	app.get('/admin/users/vendors/view', adminAuth,  vendorsView);
+	app.get('/admin/users/vendors/create', adminAuth, vendorsCreate);
+	app.post('/admin/users/vendors/store', adminAuth, Upload, vendorsStore);
+	app.get('/admin/users/vendors/view', adminAuth, vendorsView);
 	app.get('/admin/users/vendors/edit/:id', adminAuth, vendorsEdit);
 	app.post('/admin/users/vendors/update/:id', adminAuth, Upload, vendorsUpdate);
 	app.post('/admin/users/vendors/is_approved/:id', adminAuth, vendorsIsApproved);
@@ -46,7 +44,7 @@ module.exports = (app) => {
 	/* Users */
 	app.get('/admin/users/users/index', adminAuth, usersIndex);
 	app.get('/admin/users/users/create', adminAuth, usersCreate);
-	app.post('/admin/users/users/store', adminAuth, usersStore);
+	app.post('/admin/users/users/store', adminAuth, Upload, usersStore);
 	app.get('/admin/users/users/view', adminAuth, usersView);
 	app.get('/admin/users/users/edit/:id', adminAuth, usersEdit);
 	app.post('/admin/users/users/update/:id', adminAuth, Upload, usersUpdate);
@@ -54,12 +52,15 @@ module.exports = (app) => {
 	app.post('/admin/users/users/delete/:id', adminAuth, usersDelete);
 
 	/* Taxi Drivers */
-	app.get('/admin/users/taxi_drivers/index', taxiDriversIndex);
-	app.get('/admin/users/taxi_drivers/create', taxiDriversCreate);
-	app.post('/admin/users/taxi_drivers/store', taxiDriversStore);
-	app.get('/admin/users/taxi_drivers/view', taxiDriversView);
-	app.get('/admin/users/taxi_drivers/edit', taxiDriversEdit);
-	// app.post('/admin/users/taxi_drivers/update/:id', taxiDriversUpdate);
+	app.get('/admin/users/taxi_drivers/index', adminAuth, taxiDriversIndex);
+	app.get('/admin/users/taxi_drivers/create', adminAuth, taxiDriversCreate);
+	app.post('/admin/users/taxi_drivers/store', adminAuth, Upload, taxiDriversStore);
+	app.get('/admin/users/taxi_drivers/view', adminAuth, taxiDriversView);
+	app.get('/admin/users/taxi_drivers/edit', adminAuth, taxiDriversEdit);
+	// app.post('/admin/users/taxi_drivers/update/:id', adminAuth, Upload, taxiDriversUpdate);
+	// app.post('/admin/users/vendors/is_approved/:id', adminAuth, taxiDriversIsApproved);
+	// app.post('/admin/users/vendors/update_status/:id', adminAuth, taxiDriversUpdateStatus);
+	// app.post('/admin/users/vendors/delete/:id', adminAuth, taxiDriversDelete);
 
 	/* Hotels */
 	app.get('/admin/users/hotels/index', adminAuth, hotelsIndex);
