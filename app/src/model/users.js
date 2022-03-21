@@ -87,6 +87,11 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
     },
+    is_approved: {
+      type: DataTypes.ENUM('0', '1'),
+      defaultValue: "0",
+      allowNull: false
+    },
     status: {
       type: DataTypes.ENUM('0', '1'),
       defaultValue: "0",

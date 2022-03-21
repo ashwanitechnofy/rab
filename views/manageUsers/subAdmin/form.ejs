@@ -118,7 +118,7 @@
 <div class="form-group row">
     <div class="col-12 mt-2">
         <label>Status</label>
-        <input type="checkbox" name="status" value="1" data-plugin="switchery" data-color="#1bb99a" <%= typeof subAdmin != 'undefined' && subAdmin.status == '1' ? 'checked' : '' %>>
+        <input type="checkbox" name="status" value="1" data-plugin="switchery" data-color="#1bb99a" <%= typeof subAdmin != 'undefined' && subAdmin.status == '1' ? 'checked' : typeof subAdmin == 'undefined' ? 'checked' : '' %>>
     </div>
 </div>
 <button type="submit" class="btn btn-custom waves-effect waves-light">Submit</button>

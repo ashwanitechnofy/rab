@@ -70,6 +70,11 @@ module.exports = {
         type: Sequelize.STRING(191),
         allowNull: false
       },
+      is_approved: {
+        type: Sequelize.ENUM('0','1'), 
+        defaultValue: "0",
+        allowNull: false
+      },
       status: {
         type: Sequelize.ENUM('0','1'), 
         defaultValue: "0",

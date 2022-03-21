@@ -71,7 +71,7 @@ controller.categoriesView = async (req, res) => {
  * @purpose:     To view categories edit form
 */
 controller.categoriesEdit = async (req, res) => {
-    Category.findOne({where: {id: req.params.id}}).then(data => {
+    await Category.findOne({where: {id: req.params.id}}).then(data => {
         return res.render('manageCategories/categories/edit', {data: data});
     }).catch(err => {
         // req.toastr.error("Somthing went wrong.");
