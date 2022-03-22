@@ -60,7 +60,6 @@ controller.subAdminStore = async (req, res) => {
                 }
             }
             req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
-            console.log('dateeeeeeeee');
             const signUp = await User.register(req.body);
             if (signUp) {
                 // req.toastr.success("User added successfully.");
@@ -106,39 +105,27 @@ controller.subAdminEdit = async (req, res) => {
 */
 controller.subAdminUpdate = async (req, res) => {
     try {
-        console.log('@@@@@@@@@@@@@@@@  1' ,req.body);
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
         if (isUser && Object.keys(isUser).length) {
-            console.log('@@@@@@@@@@@@@@@@  2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
             if (req.files && Object.keys(req.files).length) {
-                console.log('@@@@@@@@@@@@@@@@  3');
                 if (req.files.image && Object.keys(req.files.image).length) {
-                    console.log('@@@@@@@@@@@@@@@@  image');
                   req.body.image = req.files.image[0].filename;
                 }
             }
-            console.log('@@@@@@@@@@@@@@@@  alllllllllll', req.body);
-            console.log('@@@@@@@@@@@@@@@@  parammmmmm id', req.params.id);
             req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
-            console.log('@@@@@@@@@@@@@@@@  date of birth', req.body.dob);
             result = await User.update(req.body, {id:req.params.id});
-
-            console.log(result);
             if (result) {
-                console.log('@@@@@@@@@@@@@@@@  4');
                 // req.toastr.error("User updated successfully.");
                 return res.redirect('/admin/users/sub_admin/index');
             } else{
-                console.log('@@@@@@@@@@@@@@@@  5');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
-        console.log('@@@@@@@@@@@@@@@@  6');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -204,57 +191,40 @@ controller.vendorsCreate = async (req, res) => {
  * @purpose:     To store Vendors
 */
 controller.vendorsStore = async (req, res) => {
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@  1');
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
-            console.log('sssssssssssssssssssssssssssssssssss  2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  3');
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('Vendor');
             req.body.role_id = roleId;
-            console.log('###################################  4');
             if (req.files && Object.keys(req.files).length) {
-                console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  5');
                 if (req.files.image && Object.keys(req.files.image).length) {
-                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  1 image');
-
                   req.body.image = req.files.image[0].filename;
                 }
                 if (req.files.visiting_card_image && Object.keys(req.files.visiting_card_image).length) {
-                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  2 image');
-
                     req.body.visiting_card_image = req.files.visiting_card_image[0].filename;
                 }
                 if (req.files.award_certification_image && Object.keys(req.files.award_certification_image).length) {
-                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  3 image');
-
                     req.body.award_certification_image = req.files.award_certification_image[0].filename;
                 }
             }
-            console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  6');
             req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
             const signUp = await User.register(req.body);
             if (signUp){
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  7', signUp);
                 req.body.user_id = signUp.id;
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  check id', signUp.id);
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  datata', req.body);
                 await User.registerVendorBusinessDetail(req.body);
                 // req.toastr.success("Vendor added successfully.");
                 return res.redirect('/admin/users/vendors/index');
             } else{
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  8');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
-        console.log('cccccccccccccccccccccccccccccccc', req.body);
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -298,50 +268,33 @@ controller.vendorsUpdate = async (req, res) => {
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
         if (isUser && Object.keys(isUser).length) {
-            console.log('sssssssssssssssssssssssssssssssssss  2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
-        } else {
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  3');
-    
-            console.log('###################################  4');
+        } else{
             if (req.files && Object.keys(req.files).length) {
-                console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  5');
                 if (req.files.image && Object.keys(req.files.image).length) {
-                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  1 image');
-
                   req.body.image = req.files.image[0].filename;
                 }
                 if (req.files.visiting_card_image && Object.keys(req.files.visiting_card_image).length) {
-                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  2 image');
-
                     req.body.visiting_card_image = req.files.visiting_card_image[0].filename;
                 }
                 if (req.files.award_certification_image && Object.keys(req.files.award_certification_image).length) {
-                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  3 image');
-
                     req.body.award_certification_image = req.files.award_certification_image[0].filename;
                 }
             }
-            console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  6');
             req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
             const signUp = await User.update(req.body, {id:req.params.id});
             if (signUp){
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  7', signUp);
                 req.body.user_id = req.params.id;
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  check id', req.params.id);
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  datata', req.body);
                 await User.updateVendorBusinessDetail(req.body, {user_id:req.params.id});
                 // req.toastr.success("Vendor update successfully.");
                 return res.redirect('/admin/users/vendors/index');
             } else{
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  8');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
-        console.log('cccccccccccccccccccccccccccccccc', req.body);
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -416,39 +369,31 @@ controller.usersCreate = async (req, res) => {
 */
 controller.usersStore = async (req, res) => {
     try {
-        console.log('##############    1');
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
-            console.log('##############    2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
-            console.log('##############    3');
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('User');
             req.body.role_id = roleId;
             if (req.files && Object.keys(req.files).length) {
-                console.log('##############    4');
                 if (req.files.image && Object.keys(req.files.image).length) {
                   req.body.image = req.files.image[0].filename;
                 }
             }
             req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
-            console.log('dateeeeeeeee');
             const signUp = await User.register(req.body);
             if (signUp) {
-                console.log('##############    5');
                 // req.toastr.success("User added successfully.");
                 return res.redirect('/admin/users/users/index');
             } else{
-                console.log('##############    6');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
-        console.log('##############    7');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -484,39 +429,27 @@ controller.usersEdit = async (req, res) => {
 */
 controller.usersUpdate = async (req, res) => {
     try {
-        console.log('@@@@@@@@@@@@@@@@  1');
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
         if (isUser && Object.keys(isUser).length) {
-            console.log('@@@@@@@@@@@@@@@@  2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
             if (req.files && Object.keys(req.files).length) {
-                console.log('@@@@@@@@@@@@@@@@  3');
                 if (req.files.image && Object.keys(req.files.image).length) {
-                    console.log('@@@@@@@@@@@@@@@@  image');
                   req.body.image = req.files.image[0].filename;
                 }
             }
-            console.log('@@@@@@@@@@@@@@@@  alllllllllll', req.body);
-            console.log('@@@@@@@@@@@@@@@@  parammmmmm id', req.params.id);
             req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
-            console.log('@@@@@@@@@@@@@@@@  date of birth', req.body.dob);
             result = await User.update(req.body, {id:req.params.id});
-
-            console.log(result);
             if (result) {
-                console.log('@@@@@@@@@@@@@@@@  4');
                 // req.toastr.error("User updated successfully.");
                 return res.redirect('/admin/users/users/index');
             } else{
-                console.log('@@@@@@@@@@@@@@@@  5');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
-        console.log('@@@@@@@@@@@@@@@@  6');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -555,7 +488,9 @@ controller.usersDelete = async (req, res) => {
  * @purpose:     To view Taxi Drivers listning
 */
 controller.taxiDriversIndex = async (req, res) => {
-    return res.render('manageUsers/taxiDrivers/index');
+    var taxiDriversRoleId = await Role.getIdByRoleName('Taxi Driver');
+    var taxiDrivers = await User.getUserAll({ role_id: taxiDriversRoleId });
+    return res.render('manageUsers/taxiDrivers/index', {taxiDrivers: taxiDrivers});
 }
 
 /**
@@ -575,14 +510,48 @@ controller.taxiDriversCreate = async (req, res) => {
  * @purpose:     To store Taxi Drivers
 */
 controller.taxiDriversStore = async (req, res) => {
-    console.log('okk');
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            const salt = await bcrypt.genSalt();
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+            var roleId = await Role.getIdByRoleName('Taxi Driver');
+            req.body.role_id = roleId;
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+                if (req.files.visiting_card_image && Object.keys(req.files.visiting_card_image).length) {
+                    req.body.visiting_card_image = req.files.visiting_card_image[0].filename;
+                }
+                if (req.files.award_certification_image && Object.keys(req.files.award_certification_image).length) {
+                    req.body.award_certification_image = req.files.award_certification_image[0].filename;
+                }
+            }
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
+            const signUp = await User.register(req.body);
+            if (signUp) {
+                // req.toastr.success("User added successfully.");
+                return res.redirect('/admin/users/sub_admin/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
 }
 
 /**
  * @params:      
  * @createdDate: MARCH-2022 (mm-yyyy)
  * @developer:   TCHNOFY INDIA
- * @purpose:     To view Taxi view details
+ * @purpose:     To view Taxi Drivers view details
 */
 controller.taxiDriversView = async (req, res) => {
     return res.render('manageUsers/taxiDrivers/view');
@@ -592,10 +561,87 @@ controller.taxiDriversView = async (req, res) => {
  * @params:      
  * @createdDate: MARCH-2022 (mm-yyyy)
  * @developer:   TCHNOFY INDIA
- * @purpose:     To view Taxi edit form
+ * @purpose:     To view Taxi Drivers edit form
 */
 controller.taxiDriversEdit = async (req, res) => {
     return res.render('manageUsers/taxiDrivers/edit');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To update Taxi Drivers
+*/
+controller.taxiDriversUpdate = async (req, res) => {
+    try {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
+        if (isUser && Object.keys(isUser).length) {
+            // req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
+            if (req.files && Object.keys(req.files).length) {
+                if (req.files.image && Object.keys(req.files.image).length) {
+                  req.body.image = req.files.image[0].filename;
+                }
+                if (req.files.visiting_card_image && Object.keys(req.files.visiting_card_image).length) {
+                    req.body.visiting_card_image = req.files.visiting_card_image[0].filename;
+                }
+                if (req.files.award_certification_image && Object.keys(req.files.award_certification_image).length) {
+                    req.body.award_certification_image = req.files.award_certification_image[0].filename;
+                }
+            }
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
+            result = await User.update(req.body, {id:req.params.id});
+            if (result) {
+                // req.toastr.error("User updated successfully.");
+                return res.redirect('/admin/users/sub_admin/index');
+            } else{
+                // req.toastr.error("Internal server error.");
+                return res.redirect('back');
+            }
+        }
+    } catch (err) {
+        // req.toastr.error("Somthing went wrong.");
+        return res.redirect('back');
+    }
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Taxi Drivers account approved
+*/
+controller.taxiDriversIsApproved = async (req, res) => {
+    let id = req.params.id;
+    let isApproved = req.body.is_approved == '1' ? '0' : '1';
+    await User.update({is_approved: isApproved}, {id: id});
+    return res.redirect('back');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To update Taxi Drivers status
+*/
+controller.taxiDriversUpdateStatus = async (req, res) => {
+    let id = req.params.id;
+    let status = req.body.status == '1' ? '0' : '1';
+    await User.update({status: status}, {id: id});
+    return res.redirect('back');
+}
+
+/**
+ * @params:      
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To delete Taxi Drivers
+*/
+controller.taxiDriversDelete = async (req, res) => {
+    await User.deleteUser(req.params.id);
+    return res.redirect('back');
 }
 
 /********** Hotel **********/
@@ -629,12 +675,10 @@ controller.hotelsCreate = async (req, res) => {
  * @purpose:     To store Hotels
 */
 controller.hotelsStore = async (req, res) => {
-    console.log('###############    request');
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
             // req.toastr.error("User already exist.");
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  1');
             return res.redirect('back');
         } else{
             const salt = await bcrypt.genSalt();
@@ -650,16 +694,13 @@ controller.hotelsStore = async (req, res) => {
             const signUp = await User.register(req.body);
             if (signUp) {
                 // req.toastr.success("User added successfully.");
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  2');
                 return res.redirect('/admin/users/hotels/index');
             } else{
                 // req.toastr.error("Internal server error.");
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  3');
                 return res.redirect('back');
             }
         }
     } catch (err) {
-        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  4');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -684,7 +725,6 @@ controller.hotelsView = async (req, res) => {
 controller.hotelsEdit = async (req, res) => {
     var hotelRoleId = await Role.getIdByRoleName('Hotel');
     var hotel = await User.getUserOne({ id: req.params.id,  role_id: hotelRoleId});
-    console.log('@@@@@@@@@@@@@@@@@@@@@@', hotel);
     return res.render('manageUsers/hotels/edit', {hotel: hotel});
 }
 
@@ -696,39 +736,27 @@ controller.hotelsEdit = async (req, res) => {
 */
 controller.hotelsUpdate = async (req, res) => {
     try {
-        console.log('@@@@@@@@@@@@@@@@  1');
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
         if (isUser && Object.keys(isUser).length) {
-            console.log('@@@@@@@@@@@@@@@@  2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
             if (req.files && Object.keys(req.files).length) {
-                console.log('@@@@@@@@@@@@@@@@  3');
                 if (req.files.image && Object.keys(req.files.image).length) {
-                    console.log('@@@@@@@@@@@@@@@@  image');
                   req.body.image = req.files.image[0].filename;
                 }
             }
-            console.log('@@@@@@@@@@@@@@@@  alllllllllll', req.body);
-            console.log('@@@@@@@@@@@@@@@@  parammmmmm id', req.params.id);
             req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
-            console.log('@@@@@@@@@@@@@@@@  date of birth', req.body.dob);
             result = await User.update(req.body, {id:req.params.id});
-
-            console.log(result);
             if (result) {
-                console.log('@@@@@@@@@@@@@@@@  4');
                 // req.toastr.error("Hotel updated successfully.");
                 return res.redirect('/admin/users/hotels/index');
             } else{
-                console.log('@@@@@@@@@@@@@@@@  5');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
-        console.log('@@@@@@@@@@@@@@@@  6');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
