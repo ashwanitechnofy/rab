@@ -6,6 +6,8 @@ const RoleService = require("../../service/role");
 const UserService = require("../../service/user");
 // const bcrypt = require('bcrypt');
 
+var moment = require('moment');
+
 const Role = new RoleService();
 const User = new UserService();
 
@@ -57,6 +59,8 @@ controller.subAdminStore = async (req, res) => {
                   req.body.image = req.files.image[0].filename;
                 }
             }
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
+            console.log('dateeeeeeeee');
             const signUp = await User.register(req.body);
             if (signUp) {
                 // req.toastr.success("User added successfully.");
@@ -113,6 +117,7 @@ controller.subAdminUpdate = async (req, res) => {
                   req.body.image = req.files.image[0].filename;
                 }
             }
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
             const signUp = await User.update(req.body, req.params.id);
             if (signUp) {
                 console.log('@@@@@@@@@@@@@@@@  4');
