@@ -106,20 +106,28 @@ controller.subAdminEdit = async (req, res) => {
 */
 controller.subAdminUpdate = async (req, res) => {
     try {
+        console.log('@@@@@@@@@@@@@@@@  1' ,req.body);
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
         if (isUser && Object.keys(isUser).length) {
+            console.log('@@@@@@@@@@@@@@@@  2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
             if (req.files && Object.keys(req.files).length) {
                 console.log('@@@@@@@@@@@@@@@@  3');
                 if (req.files.image && Object.keys(req.files.image).length) {
+                    console.log('@@@@@@@@@@@@@@@@  image');
                   req.body.image = req.files.image[0].filename;
                 }
             }
+            console.log('@@@@@@@@@@@@@@@@  alllllllllll', req.body);
+            console.log('@@@@@@@@@@@@@@@@  parammmmmm id', req.params.id);
             req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
-            const signUp = await User.update(req.body, req.params.id);
-            if (signUp) {
+            console.log('@@@@@@@@@@@@@@@@  date of birth', req.body.dob);
+            result = await User.update(req.body, {id:req.params.id});
+
+            console.log(result);
+            if (result) {
                 console.log('@@@@@@@@@@@@@@@@  4');
                 // req.toastr.error("User updated successfully.");
                 return res.redirect('/admin/users/sub_admin/index');
@@ -213,20 +221,29 @@ controller.vendorsStore = async (req, res) => {
             if (req.files && Object.keys(req.files).length) {
                 console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  5');
                 if (req.files.image && Object.keys(req.files.image).length) {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  1 image');
+
                   req.body.image = req.files.image[0].filename;
                 }
                 if (req.files.visiting_card_image && Object.keys(req.files.visiting_card_image).length) {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  2 image');
+
                     req.body.visiting_card_image = req.files.visiting_card_image[0].filename;
                 }
                 if (req.files.award_certification_image && Object.keys(req.files.award_certification_image).length) {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  3 image');
+
                     req.body.award_certification_image = req.files.award_certification_image[0].filename;
                 }
             }
             console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  6');
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
             const signUp = await User.register(req.body);
             if (signUp){
-                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  7');
-                req.body.user_id = signup.id;
+                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  7', signUp);
+                req.body.user_id = signUp.id;
+                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  check id', signUp.id);
+                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  datata', req.body);
                 await User.registerVendorBusinessDetail(req.body);
                 // req.toastr.success("Vendor added successfully.");
                 return res.redirect('/admin/users/vendors/index');
@@ -281,24 +298,50 @@ controller.vendorsUpdate = async (req, res) => {
     try {
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
         if (isUser && Object.keys(isUser).length) {
-            // req.toastr.error("Vendor already exist.");
+            console.log('sssssssssssssssssssssssssssssssssss  2');
+            // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
+            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  3');
+    
+            console.log('###################################  4');
             if (req.files && Object.keys(req.files).length) {
+                console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  5');
                 if (req.files.image && Object.keys(req.files.image).length) {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  1 image');
+
                   req.body.image = req.files.image[0].filename;
                 }
+                if (req.files.visiting_card_image && Object.keys(req.files.visiting_card_image).length) {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  2 image');
+
+                    req.body.visiting_card_image = req.files.visiting_card_image[0].filename;
+                }
+                if (req.files.award_certification_image && Object.keys(req.files.award_certification_image).length) {
+                    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  3 image');
+
+                    req.body.award_certification_image = req.files.award_certification_image[0].filename;
+                }
             }
-            const signUp = await User.update(req.body);
-            if (signUp) {
-                // req.toastr.success("Vendor updated successfully.");
+            console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  6');
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
+            const signUp = await User.update(req.body, {id:req.params.id});
+            if (signUp){
+                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  7', signUp);
+                req.body.user_id = req.params.id;
+                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  check id', req.params.id);
+                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  datata', req.body);
+                await User.updateVendorBusinessDetail(req.body, {user_id:req.params.id});
+                // req.toastr.success("Vendor update successfully.");
                 return res.redirect('/admin/users/vendors/index');
             } else{
+                console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  8');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
+        console.log('cccccccccccccccccccccccccccccccc', req.body);
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -373,30 +416,39 @@ controller.usersCreate = async (req, res) => {
 */
 controller.usersStore = async (req, res) => {
     try {
+        console.log('##############    1');
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
         if (isUser && Object.keys(isUser).length) {
+            console.log('##############    2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
+            console.log('##############    3');
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('User');
             req.body.role_id = roleId;
             if (req.files && Object.keys(req.files).length) {
+                console.log('##############    4');
                 if (req.files.image && Object.keys(req.files.image).length) {
                   req.body.image = req.files.image[0].filename;
                 }
             }
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
+            console.log('dateeeeeeeee');
             const signUp = await User.register(req.body);
             if (signUp) {
+                console.log('##############    5');
                 // req.toastr.success("User added successfully.");
                 return res.redirect('/admin/users/users/index');
             } else{
+                console.log('##############    6');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
+        console.log('##############    7');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -432,26 +484,39 @@ controller.usersEdit = async (req, res) => {
 */
 controller.usersUpdate = async (req, res) => {
     try {
+        console.log('@@@@@@@@@@@@@@@@  1');
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
         if (isUser && Object.keys(isUser).length) {
+            console.log('@@@@@@@@@@@@@@@@  2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
-        } else{
+        } else {
             if (req.files && Object.keys(req.files).length) {
+                console.log('@@@@@@@@@@@@@@@@  3');
                 if (req.files.image && Object.keys(req.files.image).length) {
+                    console.log('@@@@@@@@@@@@@@@@  image');
                   req.body.image = req.files.image[0].filename;
                 }
             }
-            const signUp = await User.update(req.body);
-            if (signUp) {
-                // req.toastr.success("User updated successfully.");
+            console.log('@@@@@@@@@@@@@@@@  alllllllllll', req.body);
+            console.log('@@@@@@@@@@@@@@@@  parammmmmm id', req.params.id);
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
+            console.log('@@@@@@@@@@@@@@@@  date of birth', req.body.dob);
+            result = await User.update(req.body, {id:req.params.id});
+
+            console.log(result);
+            if (result) {
+                console.log('@@@@@@@@@@@@@@@@  4');
+                // req.toastr.error("User updated successfully.");
                 return res.redirect('/admin/users/users/index');
             } else{
+                console.log('@@@@@@@@@@@@@@@@  5');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
+        console.log('@@@@@@@@@@@@@@@@  6');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }
@@ -581,6 +646,7 @@ controller.hotelsStore = async (req, res) => {
                   req.body.image = req.files.image[0].filename;
                 }
             }
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
             const signUp = await User.register(req.body);
             if (signUp) {
                 // req.toastr.success("User added successfully.");
@@ -630,26 +696,39 @@ controller.hotelsEdit = async (req, res) => {
 */
 controller.hotelsUpdate = async (req, res) => {
     try {
+        console.log('@@@@@@@@@@@@@@@@  1');
         var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}], $not: {id:req.params.id}});
         if (isUser && Object.keys(isUser).length) {
+            console.log('@@@@@@@@@@@@@@@@  2');
             // req.toastr.error("User already exist.");
             return res.redirect('back');
         } else {
             if (req.files && Object.keys(req.files).length) {
+                console.log('@@@@@@@@@@@@@@@@  3');
                 if (req.files.image && Object.keys(req.files.image).length) {
+                    console.log('@@@@@@@@@@@@@@@@  image');
                   req.body.image = req.files.image[0].filename;
                 }
             }
-            const signUp = await User.register(req.body);
-            if (signUp) {
+            console.log('@@@@@@@@@@@@@@@@  alllllllllll', req.body);
+            console.log('@@@@@@@@@@@@@@@@  parammmmmm id', req.params.id);
+            req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
+            console.log('@@@@@@@@@@@@@@@@  date of birth', req.body.dob);
+            result = await User.update(req.body, {id:req.params.id});
+
+            console.log(result);
+            if (result) {
+                console.log('@@@@@@@@@@@@@@@@  4');
                 // req.toastr.error("Hotel updated successfully.");
                 return res.redirect('/admin/users/hotels/index');
             } else{
+                console.log('@@@@@@@@@@@@@@@@  5');
                 // req.toastr.error("Internal server error.");
                 return res.redirect('back');
             }
         }
     } catch (err) {
+        console.log('@@@@@@@@@@@@@@@@  6');
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
     }

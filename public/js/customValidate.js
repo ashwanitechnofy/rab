@@ -59,7 +59,11 @@ var manageUserRules = {
         required : true,
     },
     image : {
-        required : true,
+        required : {
+            depends: function(element) {
+                return !$("#imageData").attr('src');
+            }
+        },
     }
 };
 

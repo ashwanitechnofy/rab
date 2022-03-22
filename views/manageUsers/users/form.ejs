@@ -24,9 +24,9 @@
         <label>Confirm Password</label>
         <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" autocomplete="off">
     </div>
-    
-    <% } %>
 
+    <% } %>
+    
 </div>
 <div class="form-group row">
     <div class="col-4">
@@ -44,7 +44,7 @@
     </div>
     <div class="col-4">
         <label>Date of Birth</label>
-        <input type="text" name="dob" value="<%= typeof user != 'undefined' ? moment(user.dob).format('DD-MM-YYYY')  : '' %>" class="form-control" placeholder="DD-MM-YYYY" id="datepicker-autoclose" autocomplete="off">
+        <input type="text" name="dob" value="<%= typeof user != 'undefined' ? moment(user.dob).format('DD-MM-YYYY') : '' %>" class="form-control" placeholder="DD-MM-YYYY" id="datepicker-autoclose" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">
@@ -92,7 +92,7 @@
                 <i class="fa fa-cloud-upload"></i>
                 <p>Choose an image file or drag it here.</p>
                 </div>
-                <input type="file" name="image" value="<%= typeof user != 'undefined' ? user.image : '' %>" class="dropzone" autocomplete="off">
+                <input type="file" name="image" class="dropzone" autocomplete="off">
             </div>
             <div class="preview-zone hidden col-4">
                 <div class="box box-solid">
@@ -105,7 +105,7 @@
 
                         <%if (typeof user != 'undefined') { %>
 
-                        <img width="200" src="<%= user.image %>">
+                        <img width="200" id="imageData" src="<%= user.image %>">
 
                         <% } %>
 
@@ -118,7 +118,7 @@
 <div class="form-group row">
     <div class="col-12 mt-2">
         <label>Status</label>
-        <input type="checkbox" name="status" data-plugin="switchery" data-color="#1bb99a" <%= typeof user != 'undefined' && user.status == '1' ? 'checked' : typeof user == 'undefined' ? 'checked' : '' %>>
+        <input type="checkbox" name="status" value="1" data-plugin="switchery" data-color="#1bb99a" <%= typeof user != 'undefined' && user.status == '1' ? 'checked' : typeof user == 'undefined' ? 'checked' : '' %>>
     </div>
 </div>
 <button type="submit" class="btn btn-custom waves-effect waves-light">Submit</button>

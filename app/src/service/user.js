@@ -149,6 +149,19 @@ class UserService {
 
     /**
      * @params:      
+     * @purpose: To update vendor business detail
+    */
+     updateVendorBusinessDetail(body, condition) {
+        return vendorBusinessDetails.update(body, {
+            returning: true,
+            where: condition
+        }).then(u => {
+            return true;
+        })
+    }
+
+    /**
+     * @params:      
      * @purpose: To delete user
     */
     deleteUser(id) {

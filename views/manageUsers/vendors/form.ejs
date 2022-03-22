@@ -105,7 +105,7 @@
 
                         <%if (typeof vendor != 'undefined') { %>
 
-                        <img width="200" src="<%= vendor.image %>">
+                        <img width="200" id="imageData" src="<%= vendor.image %>">
 
                         <% } %>
 
@@ -170,7 +170,7 @@
         
         <%if (typeof vendor != 'undefined' && typeof vendor.vendor_business_detail.visiting_card_image != 'undefined') { %>
 
-            <img width="200" height="120" src="<%= vendor.vendor_business_detail.visiting_card_image %>">
+            <img class="mt-3" width="150" height="120" src="<%= vendor.vendor_business_detail.visiting_card_image %>">
 
         <% } %>
 
@@ -181,7 +181,7 @@
 
         <%if (typeof vendor != 'undefined' && typeof vendor.vendor_business_detail.award_certification_image != 'undefined') { %>
 
-            <img width="200" height="120" src="<%= vendor.vendor_business_detail.award_certification_image %>">
+            <img class="mt-3" width="150" height="120" src="<%= vendor.vendor_business_detail.award_certification_image %>">
 
         <% } %>
 
