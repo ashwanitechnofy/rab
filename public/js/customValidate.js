@@ -259,3 +259,24 @@ $('#categoryForm').validate({
         },
     }
 });
+
+$('#activityForm').validate({
+    rules :{
+        title : {
+            required : true,
+            maxlength: 50,
+        },
+        category_id : {
+            required : true,
+        },
+    },
+    messages :{
+        title : {
+            required : "Please enter title.",
+            maxlength: "Title may not be greater than 50 characters.",
+        },
+        category_id : {
+            required : "Please select category.",
+        },
+    }
+});

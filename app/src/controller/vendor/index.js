@@ -10,6 +10,7 @@ const RoleService = require("../../service/role");
 const BankService = require("../../service/bank");
 
 var bcrypt = require('bcrypt');
+var moment = require('moment');
 
 const User = new UserService();
 const Role = new RoleService();
@@ -22,71 +23,116 @@ const controller = {};
 
 controller.register = async (req, res) => {
     try {
-        if(req.body.email && req.body.mobile_no){
-        var user = await User.checkUserExist({$or: [{email:req.body.email},{mobile_no:req.body.mobile_no}]});
-        if (user && Object.keys(user).length) {
+        const salt = await bcrypt.genSalt();
+        req.body.password = await bcrypt.hash(req.body.password, salt);
+        var roleId = await Role.getIdByRoleName('Vendor');
+        req.body.role_id = roleId;
+        if (req.files && Object.keys(req.files).length) {
+            if (req.files.image && Object.keys(req.files.image).length) {
+                req.body.image = req.files.image[0].filename;
+            }
+            if (req.files.visiting_card_image && Object.keys(req.files.visiting_card_image).length) {
+                req.body.visiting_card_image = req.files.visiting_card_image[0].filename;
+            }
+            if (req.files.award_certification_image && Object.keys(req.files.award_certification_image).length) {
+                req.body.award_certification_image = req.files.award_certification_image[0].filename;
+            }
+        }
+        req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
+        const signUp = await User.register(req.body);
+        if (!signUp.error){
+            req.body.user_id = signUp.id;
+            await User.registerVendorBusinessDetail(req.body);
             return res.status(200).json({
+                success: true,
+                error: false,
+                message: 'Vendor signup successfully'
+            });
+        } else{
+            return res.status(400).json({
                 success: false,
                 error: true,
-                message: 'User already exists.'
+                errors: signUp.errors
             });
-        } else {
-            const salt = await bcrypt.genSalt();
-            req.body.password = await bcrypt.hash(req.body.password, salt);
-            var roleId = await Role.getIdByRoleName('Vendor');
-            req.body.role_id = roleId;
-            if (req.files && Object.keys(req.files).length) {
-                if (req.files.visiting_image && Object.keys(req.files.visiting_image).length) {
-                  req.body.visiting_image = req.files.visiting_image[0].filename;
-                }
-                if (req.files.identity && Object.keys(req.files.identity).length) {
-                    req.body.identity = req.files.identity[0].filename;
-                  }
-                if (req.files.certificate && Object.keys(req.files.certificate).length) {
-                  req.body.certificate = req.files.certificate[0].filename;
-                }
-                if (req.files.photo && Object.keys(req.files.photo).length) {
-                  req.body.photo = req.files.photo[0].filename;
-                }
-            }
-            const signup = await User.register(req.body);
-            if (signup) {
-                req.body.user_id = signup.id;
-                 await Other.register(req.body);
-                 await UserAct.register(req.body);
-                 await KYC.register(req.body);
-                 await Bank.register(req.body);
-                    return res.status(200).json({
-                        success: true,
-                        error: false,
-                        message: 'User signup successfully'
-                    });
-                
-            } else {
-                return res.status(200).json({
-                    success: false,
-                    error: true,
-                    message: 'Something went wrong!'
-                });
-            }
-
         }
-    } else {
-        return res.status(500).json({
-            success: false,
-            error: true,
-            message: 'Email and mobile number not found!'
-        });
-    } 
     } catch (err) {
         console.log(err);
         return res.status(500).json({
             success: false,
-            error: true,
-            message: 'Internal server error'
+            error: err,
+            message: 'Something went wrong!'
         });
     }
 }
+
+
+// controller.register = async (req, res) => {
+//     try {
+//         if(req.body.email && req.body.mobile_no){
+//         var user = await User.checkUserExist({$or: [{email:req.body.email},{mobile_no:req.body.mobile_no}]});
+//         if (user && Object.keys(user).length) {
+//             return res.status(200).json({
+//                 success: false,
+//                 error: true,
+//                 message: 'User already exists.'
+//             });
+//         } else {
+//             const salt = await bcrypt.genSalt();
+//             req.body.password = await bcrypt.hash(req.body.password, salt);
+//             var roleId = await Role.getIdByRoleName('Vendor');
+//             req.body.role_id = roleId;
+//             if (req.files && Object.keys(req.files).length) {
+//                 if (req.files.visiting_image && Object.keys(req.files.visiting_image).length) {
+//                   req.body.visiting_image = req.files.visiting_image[0].filename;
+//                 }
+//                 if (req.files.identity && Object.keys(req.files.identity).length) {
+//                     req.body.identity = req.files.identity[0].filename;
+//                   }
+//                 if (req.files.certificate && Object.keys(req.files.certificate).length) {
+//                   req.body.certificate = req.files.certificate[0].filename;
+//                 }
+//                 if (req.files.photo && Object.keys(req.files.photo).length) {
+//                   req.body.photo = req.files.photo[0].filename;
+//                 }
+//             }
+//             const signup = await User.register(req.body);
+//             if (signup) {
+//                 req.body.user_id = signup.id;
+//                  await Other.register(req.body);
+//                  await UserAct.register(req.body);
+//                  await KYC.register(req.body);
+//                  await Bank.register(req.body);
+//                     return res.status(200).json({
+//                         success: true,
+//                         error: false,
+//                         message: 'User signup successfully'
+//                     });
+                
+//             } else {
+//                 return res.status(200).json({
+//                     success: false,
+//                     error: true,
+//                     message: 'Something went wrong!'
+//                 });
+//             }
+
+//         }
+//     } else {
+//         return res.status(500).json({
+//             success: false,
+//             error: true,
+//             message: 'Email and mobile number not found!'
+//         });
+//     } 
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).json({
+//             success: false,
+//             error: true,
+//             message: 'Internal server error'
+//         });
+//     }
+// }
 
 
 controller.login = async (req, res) => {

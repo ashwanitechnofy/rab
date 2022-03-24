@@ -186,8 +186,10 @@ controller.activitiesView = async (req, res) => {
  * @purpose:     To view Activities edit form
 */
 controller.activitiesEdit = async (req, res) => {
+    var categories = await Category.findAll({where: {status: '1'}});
     await Activity.findOne({where: {id: req.params.id}}).then(data => {
-        return res.render('manageCategories/activities/edit', {data: data});
+        console.log('activiyyyyyyyyyyyy',data);
+        return res.render('manageCategories/activities/edit', {categories: categories,data: data});
     }).catch(err => {
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');
@@ -206,7 +208,7 @@ controller.activitiesUpdate = async (req, res) => {
         const activity = await Activity.update(req.body, {where: {id: id}});
         if (activity) {
             // req.toastr.success("Activity added successfully.");
-            return res.redirect('/admin/categories/index');
+            return res.redirect('/admin/activities/index');
         } else{
             // req.toastr.error("Internal server error.");
             return res.redirect('back');

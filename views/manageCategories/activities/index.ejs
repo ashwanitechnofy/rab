@@ -38,7 +38,7 @@
                                     <td><%= value.title %></td>
                                     <td><%= value.category.title %></td>
                                     <td>
-                                        <input type="checkbox" class="sa-status" data-plugin="switchery" data-color="#1bb99a" data-id="<%= value.id %>" value="<%= value.status %>"  <%= (value.status == '1') ? 'checked' : '' %> />
+                                        <input type="checkbox" class="sa-status" data-plugin="switchery" data-size="small" data-color="#1bb99a" data-id="<%= value.id %>" value="<%= value.status %>"  <%= (value.status == '1') ? 'checked' : '' %> />
                                         <form id="status-form-<%= value.id %>" action="/admin/activities/update_status/<%= value.id %>" method="post" style="display: none;" >
                                             <input class="status-value-<%= value.id %>" type="hidden" name="status" value="<%= value.status %>">
                                         </form>
@@ -53,7 +53,7 @@
                                     </td>
                                 </tr>
     
-                                <% }) %>
+                            <% }) %>
 
                         </tbody>
                     </table>

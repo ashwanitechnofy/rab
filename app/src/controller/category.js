@@ -3,13 +3,13 @@ const Category = new CategoryService();
 const controller = {};
 
 controller.CategoryList = async (req, res) => {
-    const service = await Category.getParent()
+    const service = await Category.getCategory()
     return res.status(200).json({
-                success: true,
-                data: service,
-                error: false,
-                message: 'Successfully fetched categories!'
-            })
+        success: true,
+        data: service,
+        error: false,
+        message: 'Successfully fetched categories!'
+    })
 }
 
 module.exports = controller;

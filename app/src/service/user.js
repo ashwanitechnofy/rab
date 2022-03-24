@@ -18,6 +18,9 @@ class UserService {
                 .then(u => {
                     return resolve(u);
                 }).catch(err => {
+                    if(['SequelizeValidationError', 'SequelizeUniqueConstraintError'].includes(err.name)){
+                        return resolve({error:true, errors: err.errors.map(v => {return {[v.path]:v.message}})})
+                    }
                     return reject(err);
                 });
         });
