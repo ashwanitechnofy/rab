@@ -1,40 +1,32 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('kycs', {
+    await queryInterface.createTable('kyc', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER(11),
         primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      name: {
-        type: Sequelize.STRING(50),
-        allowNull:false
-      },
-      kyc_address: {
-        type: Sequelize.TEXT,
-        allowNull:false
+        autoIncrement: true,
+        allowNull: false
       },
       user_id: {
         type: Sequelize.INTEGER(11),
         allowNull:false
       },
       identity: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING(191),
         allowNull:false
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('kycs');
+    await queryInterface.dropTable('kyc');
   }
 };

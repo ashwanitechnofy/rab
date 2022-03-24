@@ -1,26 +1,111 @@
+var bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../../../../config.json')[env];
-const jwt = require("jsonwebtoken");
 const emailSend = require('../common/email');
+
+const {sequelize,DataTypes} = require('../../index');
+const Kyc = require('../../model/kyc')(sequelize, DataTypes);
+
+const RoleService = require("../../service/role");
 const UserService = require("../../service/user");
+const KYCService = require("../../service/kyc");
 const otherService = require("../../service/otherDetails");
 const UserActivityService = require("../../service/userActivity");
-const KYCService = require("../../service/kyc");
-const RoleService = require("../../service/role");
 const BankService = require("../../service/bank");
 
-var bcrypt = require('bcrypt');
 var moment = require('moment');
 
-const User = new UserService();
 const Role = new RoleService();
+const User = new UserService();
+const KYC = new KYCService();
 const Other =new otherService();
 const UserAct = new UserActivityService();
-const KYC = new KYCService();
 const Bank = new BankService();
 
 const controller = {};
 
+/**
+ * @params:      Request
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To authenticate Vendor
+*/
+controller.login = async (req, res) => {
+    try {
+        var vendorRoleId = await Role.getIdByRoleName('Vendor');
+        const { email, password } = req.body;
+        var vendor = await User.getUserOne({ email: email, role_id: vendorRoleId });
+        if (vendor && Object.keys(vendor).length) {
+            const getUp = await User.getUserOne({email, status: '1'});
+            if (getUp && Object.keys(getUp).length) {
+                const match = await bcrypt.compare(password, getUp.password);
+                if (match) {
+                    const token = await jwt.sign({authUser: getUp}, config.SECRET);
+                    return res.status(200).json({
+                        status: 200,
+                        data: {
+                            token,
+                            id: getUp.id,
+                            first_name: getUp.first_name,
+                            last_name: getUp.last_name,
+                            role_id: getUp.role_id,
+                            email: getUp.email,
+                            mobile_no: getUp.mobile_no,
+                            gender: getUp.gender,
+                            dob: getUp.dob,
+                            country: getUp.country,
+                            state: getUp.state,
+                            city: getUp.city,
+                            address: getUp.address,
+                            pin_code: getUp.country,
+                            landmark: getUp.landmark,
+                            image: getUp.image,
+                            is_approved: getUp.is_approved,
+                        },
+                        message: 'Login successfully.',
+                        error: null,
+                    });
+                } else {
+                    return res.status(400).json({
+                        status: 400,
+                        data: null,
+                        message: 'Email and password do not match.',
+                        error: true,
+                    });
+                }
+            } else {
+                return res.status(400).json({
+                    status: 400,
+                    data: null,
+                    message: 'Account not activated.',
+                    error: true,
+                })
+            }
+        } else {
+            return res.status(400).json({
+                status: 400,
+                data: null,
+                message: 'Email do not exist in our records.',
+                error: true,
+            })
+        }
+    } catch (err) {
+        return res.status(500).json({
+            status: 500,
+            data: null,
+            message: 'Somthing went wrong.',
+            error: err,
+        })
+    }
+}
+
+/**
+ * @params:      Request
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To register Vendor
+*/
 controller.register = async (req, res) => {
     try {
         const salt = await bcrypt.genSalt();
@@ -40,176 +125,71 @@ controller.register = async (req, res) => {
         }
         req.body.dob = moment(req.body.dob,'DD-MM-YYYY').format('YYYY-MM-DD');
         const signUp = await User.register(req.body);
-        if (!signUp.error){
+        if (signUp){
             req.body.user_id = signUp.id;
             await User.registerVendorBusinessDetail(req.body);
             return res.status(200).json({
-                success: true,
-                error: false,
-                message: 'Vendor signup successfully'
+                status: 200,
+                data: null,
+                message: 'Vendor signup successfully.',
+                error: null,
             });
         } else{
-            return res.status(400).json({
-                success: false,
-                error: true,
+            return res.status(500).json({
+                status: 500,
+                data: null,
+                message: 'Internal server error.',
                 errors: signUp.errors
             });
         }
     } catch (err) {
-        console.log(err);
         return res.status(500).json({
-            success: false,
-            error: err,
-            message: 'Something went wrong!'
-        });
-    }
-}
-
-
-// controller.register = async (req, res) => {
-//     try {
-//         if(req.body.email && req.body.mobile_no){
-//         var user = await User.checkUserExist({$or: [{email:req.body.email},{mobile_no:req.body.mobile_no}]});
-//         if (user && Object.keys(user).length) {
-//             return res.status(200).json({
-//                 success: false,
-//                 error: true,
-//                 message: 'User already exists.'
-//             });
-//         } else {
-//             const salt = await bcrypt.genSalt();
-//             req.body.password = await bcrypt.hash(req.body.password, salt);
-//             var roleId = await Role.getIdByRoleName('Vendor');
-//             req.body.role_id = roleId;
-//             if (req.files && Object.keys(req.files).length) {
-//                 if (req.files.visiting_image && Object.keys(req.files.visiting_image).length) {
-//                   req.body.visiting_image = req.files.visiting_image[0].filename;
-//                 }
-//                 if (req.files.identity && Object.keys(req.files.identity).length) {
-//                     req.body.identity = req.files.identity[0].filename;
-//                   }
-//                 if (req.files.certificate && Object.keys(req.files.certificate).length) {
-//                   req.body.certificate = req.files.certificate[0].filename;
-//                 }
-//                 if (req.files.photo && Object.keys(req.files.photo).length) {
-//                   req.body.photo = req.files.photo[0].filename;
-//                 }
-//             }
-//             const signup = await User.register(req.body);
-//             if (signup) {
-//                 req.body.user_id = signup.id;
-//                  await Other.register(req.body);
-//                  await UserAct.register(req.body);
-//                  await KYC.register(req.body);
-//                  await Bank.register(req.body);
-//                     return res.status(200).json({
-//                         success: true,
-//                         error: false,
-//                         message: 'User signup successfully'
-//                     });
-                
-//             } else {
-//                 return res.status(200).json({
-//                     success: false,
-//                     error: true,
-//                     message: 'Something went wrong!'
-//                 });
-//             }
-
-//         }
-//     } else {
-//         return res.status(500).json({
-//             success: false,
-//             error: true,
-//             message: 'Email and mobile number not found!'
-//         });
-//     } 
-//     } catch (err) {
-//         console.log(err);
-//         return res.status(500).json({
-//             success: false,
-//             error: true,
-//             message: 'Internal server error'
-//         });
-//     }
-// }
-
-
-controller.login = async (req, res) => {
-    var roleId = await Role.getIdByRoleName('Vendor');
-    try {
-        const {
-            email,
-            password
-        } = req.body;
-        var user = await User.getUserOne({
-            email: email,
-            role_id: roleId
-        });
-            if (user && Object.keys(user).length) {
-                const getUp = await User.getUserOne({
-                    email,
-                    status: '1'
-                });
-                if (getUp && Object.keys(getUp).length) {
-                    const match = await bcrypt.compare(password, getUp.password);
-                    if (match) {
-                        const token = await jwt.sign({
-                            email: getUp.email
-                        }, config.SECRET);
-                        return res.status(200).json({
-                            success: true,
-                            error: false,
-                            data: {
-                                id:getUp.id,
-                                token,
-                                email:getUp.email,
-                                first_name:getUp.first_name,
-                                role_id:getUp.role_id,
-                                photo:getUp.photo,
-                                mobile_no:getUp.mobile_no,
-                                lat:getUp.lat,
-                                long:getUp.long
-                            },
-                            message: 'Login successfully!'
-                        });
-                    } else {
-                        return res.status(200).json({
-                            success: false,
-                            error: true,
-                            data: null,
-                            message: 'Email and password do not match'
-                        });
-                    }
-
-                } else {
-                    return res.status(200).json({
-                        success: false,
-                        data: null,
-                        error: true,
-                        message: 'Account is not activated!'
-                    })
-                }
-        } else {
-            return res.status(500).json({
-                success: false,
-                data: null,
-                error: true,
-                message: 'Email not Found!.'
-            })
-        }
-
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            success: false,
+            status: 500,
             data: null,
-            error: true,
-            message: 'Internal Server Error'
-        })
+            message: 'Somthing went wrong.',
+            error: err,
+        });
     }
 }
 
+/**
+ * @params:      Request
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Vendor KYC
+*/
+controller.kyc = async (req, res) => {
+    try {
+        req.body.user_id = req.decoded_data.id;
+        if (req.files && Object.keys(req.files).length) {
+            if (req.files.identity && Object.keys(req.files.identity).length) {
+                req.body.identity = req.files.identity[0].filename;
+            }
+        }
+        await Kyc.create(req.body).then(data => {
+            return res.status(200).json({
+                status: 200,
+                data: null,
+                message: 'KYC successfully.',
+                error: null,
+            });
+        }).catch(err => {
+            return res.status(500).json({
+                status: 500,
+                data: null,
+                message: 'Internal server error.',
+                errors: signUp.errors
+            });
+        });
+    } catch (err) {
+        return res.status(500).json({
+            status: 500,
+            data: null,
+            message: 'Somthing went wrong.',
+            error: err,
+        });
+    }
+}
 
 controller.forget = async (req, res) => {
     try{

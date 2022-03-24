@@ -39,7 +39,7 @@ controller.login = async (req, res) => {
             if (getUp && Object.keys(getUp).length) {
                 const match = await bcrypt.compare(password, getUp.password);
                 if (match){
-                    const token = await jwt.sign({ email: getUp.email }, config.SECRET);
+                    const token = await jwt.sign({authUser: getUp}, config.SECRET);
                     req.session.data = { token: token, id: getUp.id, email: getUp.email, first_name: getUp.first_name, last_name: getUp.last_name, role_id: getUp.role_id, image: getUp.photo, mobile_no: getUp.mobile_no }
                     // req.toastr.success("You are logged in successfully.");
                     res.redirect('/admin/dashboard');

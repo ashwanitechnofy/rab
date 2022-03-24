@@ -14,20 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   kyc.init({
-    name: {
-      type: DataTypes.STRING(50),
-      allowNull:false
-    },
-    kyc_address: {
-      type: DataTypes.TEXT,
-      allowNull:false
-    },
     user_id: {
       type: DataTypes.INTEGER(11),
       allowNull:false
     },
     identity: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING(191),
       allowNull:false
     }
   }, {

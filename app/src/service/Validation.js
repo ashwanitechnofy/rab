@@ -2,9 +2,8 @@
 var bcrypt = require('bcrypt');
 const Sequelize = require("sequelize");
 const { check  } = require('express-validator/check');
-
-const {development} = require('../config/config.json');
-
+const env = process.env.NODE_ENV || 'development';
+const development = require(__dirname + '../../../../config.json')[env];
 
 const Op = Sequelize.Op;
 const operatorsAliases = {
@@ -61,13 +60,12 @@ var sequelize = new Sequelize(development.database, development.username, develo
     //storage: 'path/to/database.sqlite'
 });
 
-const UserService = require('../services/user');
+const UserService = require('../service/user');
 const User = new UserService();
 
  const validation = {
 
-       ADMIN_LogIN: [
-
+    VENDOR_LogIN: [
        check('email').isEmail().withMessage('Email address must be Valid').custom(value => {
             if (!value) {
                 return Promise.reject('Email is required');
@@ -78,8 +76,8 @@ const User = new UserService();
         }) => {
             return User.getUserOne({
                         email: req.body.email,
-                         status:'1',
-                         role_id:1
+                        status:'1',
+                        role_id:1
                 })
                 .then(async u => await bcrypt.compare(password, u.password))
         }).withMessage('Email and Password are wrong.')

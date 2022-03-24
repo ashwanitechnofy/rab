@@ -4,17 +4,21 @@ const config = require(__dirname + '/../../../config.json')[env];
 
 module.exports = (req, res, next) => {
     try {
-        const jwttoken = req.body.token || req.query.token || req.params.token || req.headers.token;
-        if (jwttoken) {
-            const decoded = jwt.verify(jwttoken, config.SECRET)
-            req.decoded_data = decoded;
-            next()
-        }
-        else {
-            res.status(401).json({ success: false, message: "Invalid Token" })
+        if (req.headers.authorization) {
+            const jwttoken = req.headers.authorization.split(' ');
+            jwt.verify(jwttoken[1], config.SECRET, (err, verify) => {
+                if(!err){
+                    req.decoded_data = verify.authUser;
+                    next();
+                } else{
+                    return res.send({ status: 400, message: "Invalid token", error: err })
+                }
+            });
+        } else{
+            res.status(401).json({ status: 401, message: "Unauthorized", error: true, })
         }
     } catch (error) {
-        res.status(401).json({ success: false, message: "Invalid Token" })
+        res.status(500).json({ status: 500, message: "Somthing went wrong.", error: error, })
     }
 
 }

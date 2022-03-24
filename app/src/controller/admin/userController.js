@@ -45,11 +45,11 @@ controller.subAdminCreate = async (req, res) => {
 */
 controller.subAdminStore = async (req, res) => {
     try {
-        // var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
-        // if (isUser && Object.keys(isUser).length) {
-        //     req.toastr.error("User already exist.");
-        //     return res.redirect('back');
-        // } else {
+        var isUser = await User.checkUserExist({$or: [{email:req.body.email}, {mobile_no:req.body.mobile_no}]});
+        if (isUser && Object.keys(isUser).length) {
+            req.toastr.error("User already exist.");
+            return res.redirect('back');
+        } else {
             const salt = await bcrypt.genSalt();
             req.body.password = await bcrypt.hash(req.body.password, salt);
             var roleId = await Role.getIdByRoleName('Admin');
@@ -68,7 +68,7 @@ controller.subAdminStore = async (req, res) => {
                 // req.toastr.error("User already exist.");
                 return res.redirect('back');
             }
-        // }
+        }
     } catch (err) {
         // req.toastr.error("Somthing went wrong.");
         return res.redirect('back');

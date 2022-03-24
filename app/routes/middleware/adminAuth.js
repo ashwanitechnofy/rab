@@ -12,12 +12,11 @@ module.exports = async(req, res, next) => {
     try {
         res.locals.toasts = req.toastr.render();
         if (req.session.data.token) {
-            // var roleId = await Role.getIdByRoleName('Admin');
             var isUser = await User.checkUserExist({ id:req.session.data.id, email:req.session.data.email, role_id:req.session.data.role_id, status:'1' });
             if(isUser){
                 jwt.verify(req.session.data.token, config.SECRET, (err, verify) => {
                     if(!err){
-                        req.decoded_data = verify.user;
+                        req.decoded_data = verify.authUser;
                         next();
                     } else{
                         console.log('admin middleware   1');

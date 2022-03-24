@@ -21,6 +21,7 @@
     "express-layout": "^0.1.0",
     "express-session": "^1.17.2",
     "express-toastr": "^2.0.2",
+    "express-validator": "^6.14.0",
     "fs": "^0.0.1-security",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
