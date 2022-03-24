@@ -9,7 +9,7 @@ var { Upload } = require('./common/files/upload')
 var { Vehicle } = require('./common/files/vehicle');
 var { Activity_upload } = require('./common/files/activity');
 
-var { VENDOR_LogIN } = require('../src/service/validation');
+var { VENDOR_LogIN } = require('../src/service/Validation');
 
 var Auth = require('./middleware/auth');
 var vendorAuth = require('./middleware/vendorAuth');
