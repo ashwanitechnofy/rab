@@ -28,6 +28,10 @@ module.exports = {
         type: Sequelize.STRING(191),
         allowNull: false
       },
+      gst_no: {
+        type: Sequelize.STRING(50),
+        allowNull: false
+      },
       description: {
         type: Sequelize.STRING(191),
         allowNull: false

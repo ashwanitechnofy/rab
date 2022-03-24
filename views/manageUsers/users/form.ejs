@@ -50,19 +50,19 @@
 <div class="form-group row">
     <div class="col-4">
         <label>Country</label>
-        <select name="country" data-value="<%= typeof user != 'undefined' ? user.country : '' %>" class="countries form-control" id="countryId" autocomplete="off">
+        <select name="country" data-value="<%= typeof user != 'undefined' ? user.country : '' %>" class="countries form-control select2" id="countryId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>
     <div class="col-4">
         <label>State</label>
-        <select name="state" data-value="<%= typeof user != 'undefined' ? user.state : '' %>" class="states form-control" id="stateId" autocomplete="off">
+        <select name="state" data-value="<%= typeof user != 'undefined' ? user.state : '' %>" class="states form-control select2" id="stateId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>
     <div class="col-4">
         <label>City</label>
-        <select name="city" data-value="<%= typeof user != 'undefined' ? user.city : '' %>" class="cities form-control" id="cityId" autocomplete="off">
+        <select name="city" data-value="<%= typeof user != 'undefined' ? user.city : '' %>" class="cities form-control select2" id="cityId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>

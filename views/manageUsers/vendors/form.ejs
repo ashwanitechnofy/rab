@@ -50,19 +50,19 @@
 <div class="form-group row">
     <div class="col-4">
         <label>Country</label>
-        <select name="country" data-value="<%= typeof vendor != 'undefined' ? vendor.country : '' %>" class="countries form-control" id="countryId" autocomplete="off">
+        <select name="country" data-value="<%= typeof vendor != 'undefined' ? vendor.country : '' %>" class="countries form-control select2" id="countryId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>
     <div class="col-4">
         <label>State</label>
-        <select name="state" data-value="<%= typeof vendor != 'undefined' ? vendor.state : '' %>" class="states form-control" id="stateId" autocomplete="off">
+        <select name="state" data-value="<%= typeof vendor != 'undefined' ? vendor.state : '' %>" class="states form-control select2" id="stateId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>
     <div class="col-4">
         <label>City</label>
-        <select name="city" data-value="<%= typeof vendor != 'undefined' ? vendor.city : '' %>" class="cities form-control" id="cityId" autocomplete="off">
+        <select name="city" data-value="<%= typeof vendor != 'undefined' ? vendor.city : '' %>" class="cities form-control select2" id="cityId" autocomplete="off">
             <option value="">Select</option>
         </select>
     </div>
@@ -135,7 +135,7 @@
 <div class="form-group row">
     <div class="col-6">
         <label>Category</label>
-        <select name="category_id" class="form-control" autocomplete="off">
+        <select name="category_id" class="form-control select2" autocomplete="off">
             <option value="">Select</option>
 
             <% categories.forEach((value, key) => { %>
@@ -149,6 +149,12 @@
     <div class="col-6">
         <label>Location</label>
         <input type="text" name="location" value="<%= typeof vendor != 'undefined' ? vendor.vendor_business_detail.location : '' %>" class="form-control" placeholder="Location" autocomplete="off">
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-6">
+        <label>GST Number</label>
+        <input type="text" name="gst_no" value="<%= typeof vendor != 'undefined' ? vendor.vendor_business_detail.gst_no : '' %>" class="form-control" placeholder="GST Number" autocomplete="off">
     </div>
 </div>
 <div class="form-group row">

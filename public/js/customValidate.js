@@ -136,12 +136,18 @@ $('#vendorForm').validate({
                 },
                 alternate_mobile_number : {
                     required : true,
+                    maxlength: 20,
                 },
                 category_id : {
                     required : true,
                 },
                 location : {
                     required : true,
+                    maxlength: 191,
+                },
+                gst_no : {
+                    required : true,
+                    maxlength: 50,
                 },
                 description : {
                     required : true,
@@ -154,16 +160,21 @@ $('#vendorForm').validate({
                 },
                 alternate_mobile_number : {
                     required : "Please enter your business aletrnate mobile.",
+                    maxlength: "Aletrnate mobile may not be greater than 20 characters.",
                 },
                 category_id : {
                     required : "Please select your business category.",
                 },
                 location : {
                     required : "Please enter your business location.",
+                    maxlength: "Location may not be greater than 191 characters.",
+                },
+                gst_no : {
+                    required : "Please enter your business GST number.",
+                    maxlength: "GST number may not be greater than 50 characters.",
                 },
                 description : {
                     required : "Please enter your business description.",
-        
                 },
             }),
 });
