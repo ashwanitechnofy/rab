@@ -1,4 +1,4 @@
-var { login, register, kyc, forget } = require('../src/controller/vendor/index')
+var { login, register, kyc, bank_details, forgot } = require('../src/controller/vendor/index')
 var { vehicle_add,categoryList,getList,vehicle_view,vehicle_edit,vehicle_delete,add_comment } = require('../src/controller/vendor/vehicle')
 var {booking_create,change_booking_status,check_avail_vehicle,check_coupon,check_vehicle_booking} = require('../src/controller/vendor/booking');
 var { activity_add,activity_edit,activity_delete,getAList,activity_view,add_activity_comment,change_activity_status } = require('../src/controller/vendor/activity')
@@ -13,13 +13,15 @@ var { VENDOR_LogIN } = require('../src/service/Validation');
 
 var Auth = require('./middleware/auth');
 var vendorAuth = require('./middleware/vendorAuth');
+// const bank_details = require('../src/model/bank_details');
 // var auth = require('./middleware/vendorAuth');
 
 module.exports = (app) => {
 	app.post('/api/v1/vendor/login', login);
 	app.post('/api/v1/vendor/signup', Upload, register);
 	app.post('/api/v1/vendor/kyc', Auth, vendorAuth, Upload, kyc);
-	app.post('/api/v1/vendor/forget', forget);
+	app.post('/api/v1/vendor/bank_details', Auth, vendorAuth, bank_details);
+	app.post('/api/v1/vendor/forgot', forgot);
 
 	//vehicle
 	app.get('/api/v1/vendor/vehicle/categoryAllList', Auth, vendorAuth, categoryList);

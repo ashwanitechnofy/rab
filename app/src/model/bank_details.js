@@ -18,22 +18,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
-    account_name: {
-      type: DataTypes.STRING(100),
+    account_holder_name: {
+      type: DataTypes.STRING(50),
       allowNull: false
     },
     account_no: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(50),
       allowNull: false
     },
     ifsc_code: {
       type: DataTypes.STRING(20),
       allowNull: false
-    },
-    primary_bank: {
-      type: DataTypes.ENUM('0','1'), 
-      defaultValue: "0"
-    },
+    }
   }, {
     sequelize,
     modelName: 'bank_details',

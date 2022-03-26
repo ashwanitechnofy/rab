@@ -3,30 +3,26 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('bank_details', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER(11),
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true,
+        allowNull: false
       },
       user_id: {
         type: Sequelize.INTEGER(11),
         allowNull: false
       },
-      account_name: {
-        type: Sequelize.STRING(100),
+      account_holder_name: {
+        type: Sequelize.STRING(50),
         allowNull: false
       },
       account_no: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(50),
         allowNull: false
       },
       ifsc_code: {
         type: Sequelize.STRING(20),
         allowNull: false
-      },
-      primary_bank: {
-        type: Sequelize.ENUM('0','1'), 
-        defaultValue: "0"
       },
       createdAt: {
         allowNull: false,

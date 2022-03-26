@@ -6,6 +6,7 @@ const emailSend = require('../common/email');
 
 const {sequelize,DataTypes} = require('../../index');
 const Kyc = require('../../model/kyc')(sequelize, DataTypes);
+const BankDetails = require('../../model/bank_details')(sequelize, DataTypes);
 
 const RoleService = require("../../service/role");
 const UserService = require("../../service/user");
@@ -191,57 +192,153 @@ controller.kyc = async (req, res) => {
     }
 }
 
-controller.forget = async (req, res) => {
-    try{
-    var roleId = await Role.getIdByRoleName('Vendor');
-    let email = req.body.email;
-    if(email){
-    const service = await User.getUserOne({email:email,role_id:roleId,status:'1'});
-    if(!service){
-        return res.status(200).json({
-            success: false,
-            error: true,
-            message: 'No User Found!'
-        });
-        }else{
-            const token = await jwt.sign({
-                email: service.email,
-            }, config.SECRET, { expiresIn: '1h' });
-           var  adminData = await User.getAdminEmail();
-            var mesg = 'Hii<br/> Click the link for reset password <a href="' + config.BASE_URL + 'reset/'+token+'">'+ config.BASE_URL + 'reset/'+token+'</a><br/>Thank you!';
-            await emailSend.email_send(service.email, adminData.first_name +' '+adminData.last_name + '<' + adminData.email + '>', 'Reset Password', mesg,  async function (response) {
-         if(response){
-            await User.update({reset_token:token},{email:service.email});
+/**
+ * @params:      Request
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To Vendor Bank details
+*/
+controller.bank_details = async (req, res) => {
+    try {
+        req.body.user_id = req.decoded_data.id;
+        await BankDetails.create(req.body).then(data => {
             return res.status(200).json({
-                success: true,
-                error: false,
-                message: 'Please check your email to reset the password.'
+                status: 200,
+                data: null,
+                message: 'Bank Details successfully.',
+                error: null,
             });
-        }else{
+        }).catch(err => {
             return res.status(500).json({
-                success: false,
-                error: true,
-                message: 'Mail not send!'
-            })
-        } 
+                status: 500,
+                data: null,
+                message: 'Internal server error.',
+                errors: signUp.errors
+            });
         });
-        }
-        }else{
-            return res.status(500).json({
-                success: false,
-                error: true,
-                message: 'Email field not found!'
-            })
-        }      
     } catch (err) {
-        console.log(err);
         return res.status(500).json({
-            success: false,
+            status: 500,
             data: null,
-            error: true,
-            message: 'Internal Server Error'
-        })
+            message: 'Somthing went wrong.',
+            error: err,
+        });
+    }
+}
+
+/**
+ * @params:      Request
+ * @createdDate: MARCH-2022 (mm-yyyy)
+ * @developer:   TCHNOFY INDIA
+ * @purpose:     To forgot password vendor
+*/
+controller.forgot = async (req, res) => {
+    try{
+        var roleId = await Role.getIdByRoleName('Vendor');
+        let email = req.body.email;
+        if(email){
+        const service = await User.getUserOne({email:email,role_id:roleId,status:'1'});
+        if(!service){
+            return res.status(200).json({
+                status: 200,
+                data: null,
+                message: 'No User Found.',
+                error: null,
+            });
+            }else{
+                const token = await jwt.sign({
+                    email: service.email,
+                }, config.SECRET, { expiresIn: '1h' });
+            var  adminData = await User.getAdminEmail();
+                var mesg = 'Hii<br/> Click the link for reset password <a href="' + config.BASE_URL + 'reset/'+token+'">'+ config.BASE_URL + 'reset/'+token+'</a><br/>Thank you!';
+                await emailSend.email_send(service.email, adminData.first_name +' '+adminData.last_name + '<' + adminData.email + '>', 'Reset Password', mesg,  async function (response) {
+            if(response){
+                await User.update({reset_token:token},{email:service.email});
+                return res.status(200).json({
+                    status: 200,
+                    data: null,
+                    message: 'Please check your email to reset the password.',
+                    error: null,
+                });
+            }else{
+                return res.status(500).json({
+                    status: 500,
+                    data: null,
+                    message: 'Mail not send.',
+                    error: null,
+                })
+            } 
+            });
+            }
+            }else{
+                return res.status(500).json({
+                    status: 500,
+                    data: null,
+                    message: 'Email field not found.',
+                    error: null,
+                })
+            }      
+        } catch (err) {
+        return res.status(500).json({
+            status: 500,
+            data: null,
+            message: 'Internal Server Error.',
+            error: err,
+        });
     }  
 }
+
+// controller.forget = async (req, res) => {
+//     try{
+//     var roleId = await Role.getIdByRoleName('Vendor');
+//     let email = req.body.email;
+//     if(email){
+//     const service = await User.getUserOne({email:email,role_id:roleId,status:'1'});
+//     if(!service){
+//         return res.status(200).json({
+//             success: false,
+//             error: true,
+//             message: 'No User Found!'
+//         });
+//         }else{
+//             const token = await jwt.sign({
+//                 email: service.email,
+//             }, config.SECRET, { expiresIn: '1h' });
+//            var  adminData = await User.getAdminEmail();
+//             var mesg = 'Hii<br/> Click the link for reset password <a href="' + config.BASE_URL + 'reset/'+token+'">'+ config.BASE_URL + 'reset/'+token+'</a><br/>Thank you!';
+//             await emailSend.email_send(service.email, adminData.first_name +' '+adminData.last_name + '<' + adminData.email + '>', 'Reset Password', mesg,  async function (response) {
+//          if(response){
+//             await User.update({reset_token:token},{email:service.email});
+//             return res.status(200).json({
+//                 success: true,
+//                 error: false,
+//                 message: 'Please check your email to reset the password.'
+//             });
+//         }else{
+//             return res.status(500).json({
+//                 success: false,
+//                 error: true,
+//                 message: 'Mail not send!'
+//             })
+//         } 
+//         });
+//         }
+//         }else{
+//             return res.status(500).json({
+//                 success: false,
+//                 error: true,
+//                 message: 'Email field not found!'
+//             })
+//         }      
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).json({
+//             success: false,
+//             data: null,
+//             error: true,
+//             message: 'Internal Server Error'
+//         })
+//     }  
+// }
 
 module.exports = controller;

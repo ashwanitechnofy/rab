@@ -28,7 +28,7 @@
                                 <th>Mobile</th>
                                 <th>Gender</th>
                                 <th>DOB</th>
-                                <th>Status</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -42,7 +42,7 @@
                                     <td><%= value.mobile_no %></td>
                                     <td><%= value.gender %></td>
                                     <td><%= value.dob %></td>
-                                    <td>
+                                    <td class="text-center">
                                         <input type="checkbox" class="sa-status" data-plugin="switchery" data-size="small" data-color="#1bb99a" data-id="<%= value.id %>" value="<%= value.status %>"  <%= (value.status === '1') ? 'checked' : '' %> />
                                         <form id="status-form-<%= value.id %>" action="/admin/users/users/update_status/<%= value.id %>" method="post" style="display: none;" >
                                             <input class="status-value-<%= value.id %>" type="hidden" name="status" value="<%= value.status %>">
